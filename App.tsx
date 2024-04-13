@@ -1,6 +1,12 @@
 import React from "react";
-import { createTheme, ThemeProvider } from "@rneui/themed";
-import Component from "./components/MyComponent";
+import { createTheme } from "@rneui/themed";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
+import Header from "./components/Header";
+
+const Stack = createNativeStackNavigator();
 
 const theme = createTheme({
   lightColors: {},
@@ -9,8 +15,18 @@ const theme = createTheme({
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Component />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              header: () => <Header />,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
