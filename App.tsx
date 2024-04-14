@@ -6,11 +6,16 @@ import HomeScreen from "./screens/HomeScreen";
 import Header from "./components/Header";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import About from "./screens/About";
+import { createTheme, ThemeProvider } from "@rneui/themed";
+import Component from "./components/MyComponent";
+import { NavigationContainer } from "@react-navigation/native";
+
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
+
     <SafeAreaProvider>
       <NavigationContainer>
         <Drawer.Navigator initialRouteName="Home">
@@ -31,5 +36,10 @@ export default function App() {
         </Drawer.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+    <ThemeProvider theme={theme}>
+      <NavigationContainer>
+        <Component />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
