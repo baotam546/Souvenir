@@ -13,16 +13,16 @@ import { useNavigation } from "@react-navigation/native";
 const Header = () => {
   const navigation = useNavigation();
 
-  const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
+  // const openDrawer = () => {
+  //   navigation.dispatch(DrawerActions.openDrawer());
+  // };
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={openDrawer}>
+        {/* <TouchableOpacity onPress={openDrawer}>
           <Ionicons name="menu-outline" size={24} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View>
           <Image source={logoImg} style={styles.logo} />
         </View>

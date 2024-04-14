@@ -16,7 +16,6 @@ const HomeScreen = () => {
       <View style={{ flex: 1 }}>
         <Text style={styles.mainTitle}>All Feature</Text>
       </View>
-
       <View style={{ flex: 1 }}>
         <FlatList
           horizontal
