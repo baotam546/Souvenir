@@ -1,14 +1,13 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import HomeScreen from "./screens/HomeScreen";
 import Header from "./components/Header";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import About from "./screens/About";
-import { createTheme, ThemeProvider } from "@rneui/themed";
-import Component from "./components/MyComponent";
-import { NavigationContainer } from "@react-navigation/native";
+
+
+
 
 
 const Drawer = createDrawerNavigator();
@@ -36,10 +35,5 @@ export default function App() {
         </Drawer.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
-    <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <Component />
-      </NavigationContainer>
-    </ThemeProvider>
   );
 }
