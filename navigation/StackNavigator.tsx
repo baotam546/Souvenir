@@ -1,22 +1,20 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import SearchScreen from '../screens/SearchScreen'
+import { View, Text } from "react-native";
+import React from "react";
 
-const Stack = createStackNavigator()
+import SearchScreen from "../screens/SearchScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
 const SearchStackNavigator = () => {
   return (
     <Stack.Navigator
-        screenOptions={{
-            headerShown: false
-        }}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
-        <Stack.Screen
-            name='search'
-            component={SearchScreen}
-        />
+      <Stack.Screen name="search" component={SearchScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export {SearchStackNavigator }
+export { SearchStackNavigator };
