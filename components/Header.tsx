@@ -2,37 +2,36 @@ import { View, Platform, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "@rneui/base";
 import Search from "./SearchBar";
 import Colors from "../constants/Colors";
-import { DrawerActions } from "@react-navigation/native";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const Header = () => {
   const navigation = useNavigation();
 
-  // const openDrawer = () => {
-  //   navigation.dispatch(DrawerActions.openDrawer());
-  // };
-
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        {/* <TouchableOpacity onPress={openDrawer}>
-          <Ionicons name="menu-outline" size={24} />
-        </TouchableOpacity> */}
         <View>
           <Image source={logoImg} style={styles.logo} />
         </View>
-        <TouchableOpacity>
-          <Avatar
-            size={32}
-            rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-          />
-        </TouchableOpacity>
+        <View
+          style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
+        >
+          <TouchableOpacity>
+            <Ionicons name="cart-outline" size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Avatar
+              size={32}
+              rounded
+              source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
         <Search />

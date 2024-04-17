@@ -1,14 +1,13 @@
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MainStackNavigator } from './StackNavigator';
-import { MaterialIcons } from '@expo/vector-icons';
-import Header from '../components/Header';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MainStackNavigator } from "./StackNavigator";
+import { MaterialIcons } from "@expo/vector-icons";
+import Header from "../components/Header";
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-
         tabBarShowLabel: false,
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "gray",
@@ -25,7 +24,7 @@ const TabNavigator = () => {
         }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default TabNavigator
+export default TabNavigator;
