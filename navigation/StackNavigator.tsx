@@ -15,8 +15,8 @@ const MainStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="about" component={About} />
+      <Stack.Screen name="home-screen" component={HomeScreen} />
+      <Stack.Screen name="about-screen" component={About} />
     </Stack.Navigator>
   );
 };
