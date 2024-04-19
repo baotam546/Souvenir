@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import ProductCard from '../../components/ProductCard'
 
 const ProductListScreen = () => {
   return (
@@ -18,6 +19,10 @@ const ProductListScreen = () => {
                 52,082+ Items
             </Text>
         </View>
+        <View style={styles.productListContainer}>
+            <ProductCard/>
+            <ProductCard/>
+        </View>
     </View>
   )
 }
@@ -34,5 +39,12 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
+        marginBottom:10
+    },
+    productListContainer:{
+        display:'flex',
+        flexDirection:'row',
+        flexWrap:'wrap',
+        gap:10,
     }
 })

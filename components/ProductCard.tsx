@@ -7,10 +7,12 @@ import {
   StyleSheet,
 } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const productImg = require("../assets/teddy.jpg");
 
 const ProductCard = () => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={{
@@ -26,6 +28,9 @@ const ProductCard = () => {
 
         elevation: 9,
       }}
+      onPress={()=>{
+        navigation.navigate('productDetails-screen');
+      }}
     >
       <View
         style={{
@@ -36,7 +41,7 @@ const ProductCard = () => {
         }}
       >
         {/* product img */}
-        <View style={{ height: 175, width: 200 }}>
+        <View style={{ height: 175, width: 170 }}>
           <Image
             source={productImg}
             resizeMode="cover"

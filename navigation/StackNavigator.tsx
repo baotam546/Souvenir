@@ -9,6 +9,7 @@ import About from "../screens/About";
 import ProductListScreen from "../screens/ProductList/ProductListScreen";
 import HeaderWithBackButton from "../components/HeaderWithBackButton";
 import Header from "../components/Header";
+import ProductDetailsScreen from "../screens/ProductDetails/ProductDetailsScreen";
 
 const Stack = createNativeStackNavigator();
 const HomeStackNavigator = () => {
@@ -21,11 +22,15 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="home-screen" component={HomeScreen} />
       <Stack.Screen
       options={{
-        headerShown: true,
         header: () => <HeaderWithBackButton title="All Items"/>
        }}
       name="productList-screen" component={ProductListScreen} />
       <Stack.Screen name="about-screen" component={About} />
+      <Stack.Screen
+      options={{
+        header: () => <HeaderWithBackButton title="Product Details"/>
+       }}
+      name= "productDetails-screen" component={ProductDetailsScreen}/>
     </Stack.Navigator>
   );
 };
