@@ -6,16 +6,25 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
 import About from "../screens/About";
+import ProductListScreen from "../screens/ProductList/ProductListScreen";
+import HeaderWithBackButton from "../components/HeaderWithBackButton";
+import Header from "../components/Header";
 
 const Stack = createNativeStackNavigator();
-const MainStackNavigator = () => {
+const HomeStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        header: () => <Header />,
       }}
     >
       <Stack.Screen name="home-screen" component={HomeScreen} />
+      <Stack.Screen
+      options={{
+        headerShown: true,
+        header: () => <HeaderWithBackButton title="All Items"/>
+       }}
+      name="productList-screen" component={ProductListScreen} />
       <Stack.Screen name="about-screen" component={About} />
     </Stack.Navigator>
   );
@@ -33,4 +42,5 @@ const SearchStackNavigator = () => {
   );
 };
 
-export { SearchStackNavigator, MainStackNavigator };
+
+export { SearchStackNavigator,  HomeStackNavigator };
