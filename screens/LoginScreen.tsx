@@ -5,8 +5,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {
   Text,
   StyleSheet,
-  TextInput,
-  Pressable,
   View,
   TouchableOpacity,
   Image,
@@ -14,12 +12,12 @@ import {
 import { Input } from "@rneui/themed";
 
 type RootStackParamList = {
-  Home: undefined;
+  Register: undefined;
   Details: { itemId: number };
 };
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Home"
+  "Register"
 >;
 
 type Props = {
@@ -82,7 +80,7 @@ export default function LoginScreen({ navigation }: Props) {
             Forgot Password?
           </Text>
         </TouchableOpacity>
-        <Pressable
+        <TouchableOpacity
           style={styles.button}
           onPress={() => {
             console.log(email, password);
@@ -93,12 +91,13 @@ export default function LoginScreen({ navigation }: Props) {
             style={{
               fontSize: 24,
               textAlign: "center",
+              fontWeight: "bold",
               color: "white",
             }}
           >
             Login
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.alternativeLoginContainer}>
@@ -109,7 +108,6 @@ export default function LoginScreen({ navigation }: Props) {
               source={require("../assets/google-icon-4x.png")}
               resizeMode="stretch"
               style={{ width: '100%', height: '100%' }}/>
-            {/* <Icon name="google" size={24} color="#000" /> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialLoginButton}>
             <Icon name="apple" size={24} color="#000" />
@@ -118,7 +116,13 @@ export default function LoginScreen({ navigation }: Props) {
             <Icon name="facebook" size={24} color="#3D4DA6" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.altTextFooter}>Create An Account <Text style={{color: 'red', fontWeight: 'bold'}}>Sign Up</Text></Text>
+        <View style={styles.altTextFooterContainer}>
+          <Text style={styles.altTextFooter}>Create An Account  </Text>
+          <TouchableOpacity
+          onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.altTextFooterNav}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -145,10 +149,8 @@ const styles = StyleSheet.create({
   inputBox: {
     height: 55,
     padding: 15,
-
-    // margin: 12,
     fontSize: 16,
-    backgroundColor: "#EDEFEE",
+
   },
   button: {
     padding: 12,
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     // padding: 10,
-    margin: 10,
+    margin: 5,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -184,26 +186,29 @@ const styles = StyleSheet.create({
     borderColor: "#F83758",
     borderWidth: 1,
   },
-  // socialLoginButtonText: {
-  //   color: "white",
-  //   fontSize: 16,
-  //   fontWeight: "bold",
-  // },
   altTextHeader: {
     fontSize: 16,
-    padding: 20,
-    marginVertical: 8,
+    paddingVertical: 15,
     color: "black",
     textAlign: "center",
     opacity: 0.7,
-  }, 
-  altTextFooter:{
+  },
+  altTextFooter: {
     fontSize: 16,
-    padding: 20,
-    marginVertical: 0,
+    paddingVertical: 15,
     color: "black",
-    textAlign: "center",
     opacity: 0.7,
-  }
-  
+  },
+  altTextFooterContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    
+  },
+  altTextFooterNav: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });
