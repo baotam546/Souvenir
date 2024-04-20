@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { Input } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
 
 type RootStackParamList = {
   Home: undefined;
@@ -27,6 +28,7 @@ export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, setLogin] = useState(false);
+  const navigate = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Welcome{'\n'}Back!</Text>
@@ -58,13 +60,22 @@ export default function LoginScreen({ navigation }: Props) {
         <Text
           style={{
             fontSize: 24,
+            fontWeight: "bold",
             textAlign: "center",
-            color: "black",
+            color: "white",
           }}
         >
           Login
         </Text>
       </Pressable>
+      <View style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+        <Text style={styles.createAccoutText}>
+          Create an account <Text onPress={()=>{
+            navigate.navigate("Register");
+          }} style={{ color: "red", alignItems:'flex-end' }}> Sign up</Text>
+        </Text>
+      </View>
+          
     </View>
   );
 }
@@ -102,10 +113,16 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     color: "black",
-    backgroundColor: "#EE9972",
-    width: "50%",
+    backgroundColor: "#f22828",
+    width: "90%",
     alignSelf: "center",
-    borderRadius: 20,
+    borderRadius: 5,
     fontWeight: "bold",
   },
+  createAccoutText:{
+    fontSize: 14,
+    marginVertical: 8,
+    color: "black",
+    textAlign: "center",
+  }
 });
