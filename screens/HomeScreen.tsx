@@ -8,14 +8,14 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../components/Header";
 import { FlatList } from "react-native";
 import CategoryCircleCard from "../components/CategoryCircleCard";
 import MainCarousel from "../components/MainCarousel";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import ProductCard from "../components/ProductCard";
+import { useNavigation } from "@react-navigation/native";
+
 
 const productImg = require("../assets/teddy.jpg");
 
@@ -31,6 +31,7 @@ const Product = [
 ];
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   return (
     <ScrollView style={styles.scrollViewContainer}>
       <View style={{ flex: 1, paddingHorizontal: 10 }}>
@@ -91,6 +92,9 @@ const HomeScreen = () => {
                 alignItems: "center",
                 columnGap: 10,
                 borderRadius: 10,
+              }}
+              onPress={() => {
+                navigation.navigate("productList-screen");
               }}
             >
               <Text style={{ fontSize: 16, color: "white" }}>View all</Text>
