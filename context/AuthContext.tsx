@@ -1,53 +1,74 @@
-// import axios from "axios";
-// import { createContext, useContext, useState } from "react";
-// import { loginApi } from "../utils/api/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { loginApi } from "../utils/api/login";
+import axios from "axios";
 
-// interface AuthProps{
-//     authState?: {
-//         token:String | null;
-//         authenticated: boolean | null;
-//     };
-//     onRegister?: (email: String, password: String) => Promise<any>;
-//     onLogin?: (email: String, password: String) => Promise<any>;
-//     onLogout?: () => Promise<any>;
-// }
+interface AuthContextType {
+  login: (username: string, password: string) => void;
+  logout: () => void;
+  userToken: string;
+  isLoading: boolean;
+}
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [userToken, setUserToken] = useState("");
 
-// const TOKEN_KEY = 'my_token';
-// export const API_URL = ''
-// const AuthContext = createContext<AuthProps>({});
+  const login = async (username: string, password: string) => {
+    try {
+    //   setIsLoading(true);
+    //   const res = await loginApi.login(username, password);
+    console.log("login")
+    const res = await axios.post("http://10.0.2.2:3000/api/auth/login", {
+        username: username,
+        password: password,
+    })
+      if (res.status == 200) {
+        const token = res.data.accessToken;
+        AsyncStorage.setItem("userToken", token);
+      }
 
-// export const useAuth = () => {
-//     return useContext(AuthContext);
-// }
+    } catch (error) {
+      console.log("login error", error);
+    }
+  };
 
-// export const AuthProvider = ({children}: any) => {
-//     const [authState, setAuthState] = useState<{
-//         token: string | null;
-//         authenticated: boolean | null;
-//     }>({
-//         token: null,
-//         authenticated: null,
-//     })
+  const logout = () => {
+    setIsLoading(true);
+    setUserToken("");
+    AsyncStorage.removeItem("userToken");
+    setIsLoading(false);
+  };
 
-//     const register = async (email: string, password: string) => {
-//         try {
-//             const res =  await loginApi.register(email,password);
-//             setAuthState({
-//                 token: res.data.token,
-//                 authenticated: true
-//             })
-//         } catch (error) {
-//             return {
-//                 error: true, msg: (error as any ).response.data.msg
-//             }
-//         }
-//     }
-    
-//     const value = {
-//         onRegister: register,
-//         onLogin: login,
-//         onLogout:logout,
-//         authState: authState
-//     }
-//     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-// }
+  const isLoggedIn = async () => {
+    try {
+      setIsLoading(true);
+      let userToken = await AsyncStorage.getItem("userToken");
+      setUserToken(userToken || "");
+      setIsLoading(false);
+    } catch (error) {
+      console.log("isLoggedIn erro", error);
+    }
+  };
+
+  const authContextValue: AuthContextType = {
+    login,
+    logout,
+    userToken,
+    isLoading,
+  };
+
+  useEffect(() => {
+    isLoggedIn();
+  }, []);
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

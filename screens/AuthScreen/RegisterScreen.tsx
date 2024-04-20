@@ -61,7 +61,6 @@ export default function RegisterScreen({ navigation }: Props) {
       <Pressable
         style={styles.button}
         onPress={() => {
-          console.log(email, password);
           setLogin(true);
         }}
       >

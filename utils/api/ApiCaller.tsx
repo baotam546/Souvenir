@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const defaultURL = "https://domus.io.vn/api";
+const defaultURL = "http://localhost:3000/api";
 
 interface PublicCallParams {
     method: string;

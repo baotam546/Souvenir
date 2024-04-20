@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import {
@@ -7,9 +7,11 @@ import {
   TextInput,
   Pressable,
   View,
+  TouchableOpacity,
 } from "react-native";
 import { Input } from "@rneui/themed";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation  } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
 
 type RootStackParamList = {
   Home: undefined;
@@ -27,7 +29,9 @@ type Props = {
 export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [login, setLogin] = useState(false);
+  const authContext = useContext(AuthContext);
+  const userToken = authContext?.userToken;
+  const login = authContext?.login;
   const navigate = useNavigation();
   return (
     <View style={styles.container}>
@@ -50,11 +54,10 @@ export default function LoginScreen({ navigation }: Props) {
         />
       </View>
 
-      <Pressable
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log(email, password);
-          setLogin(true);
+          login && login(email, password);
         }}
       >
         <Text
@@ -67,7 +70,7 @@ export default function LoginScreen({ navigation }: Props) {
         >
           Login
         </Text>
-      </Pressable>
+      </TouchableOpacity>
       <View style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
         <Text style={styles.createAccoutText}>
           Create an account <Text onPress={()=>{
