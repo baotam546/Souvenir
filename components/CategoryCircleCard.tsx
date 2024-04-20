@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Avatar } from "@rneui/base";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 const categoryImg = require("../assets/teddy.jpg");
 
 const CategoryCircleCard = ({ name }) => {
