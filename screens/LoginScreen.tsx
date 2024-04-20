@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import {
   Text,
@@ -7,6 +8,8 @@ import {
   TextInput,
   Pressable,
   View,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import { Input } from "@rneui/themed";
 
@@ -29,15 +32,26 @@ export default function LoginScreen({ navigation }: Props) {
   const [login, setLogin] = useState(false);
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Welcome{'\n'}Back!</Text>
+      <Text style={styles.headerText}>Welcome{"\n"}Back!</Text>
 
-      <View>
+      <View
+        style={{
+          flex: 1,
+          width: "90%",
+          // justifyContent: "center",
+          alignSelf: "center",
+        }}
+      >
         <Input
           style={styles.inputBox}
           value={email}
           onChangeText={setEmail}
           placeholder={"Username or Email"}
-          
+          leftIcon={{
+            type: "font-awesome",
+            name: "user",
+            style: { opacity: 0.7 },
+          }}
         />
         <Input
           style={styles.inputBox}
@@ -45,26 +59,67 @@ export default function LoginScreen({ navigation }: Props) {
           onChangeText={setPassword}
           placeholder={"Password"}
           secureTextEntry={true}
+          leftIcon={{
+            type: "font-awesome",
+            name: "lock",
+            style: { opacity: 0.7 },
+          }}
         />
-      </View>
-
-      <Pressable
-        style={styles.button}
-        onPress={() => {
-          console.log(email, password);
-          setLogin(true);
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 24,
-            textAlign: "center",
-            color: "black",
+        <TouchableOpacity
+          style={{ alignSelf: "flex-end", marginLeft: 20 }}
+          onPress={() => {
+            console.log("Forgot Password");
           }}
         >
-          Login
-        </Text>
-      </Pressable>
+          <Text
+            style={{
+              marginRight: 10,
+              color: "red",
+              fontSize: 16,
+              fontWeight: "300",
+            }}
+          >
+            Forgot Password?
+          </Text>
+        </TouchableOpacity>
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            console.log(email, password);
+            setLogin(true);
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            Login
+          </Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.alternativeLoginContainer}>
+        <Text style={styles.altTextHeader}>- OR continue with -</Text>
+        <View style={styles.socialLoginContainer}>
+          <TouchableOpacity style={styles.socialLoginButton}>
+            <Image
+              source={require("../assets/google-icon-4x.png")}
+              resizeMode="stretch"
+              style={{ width: '100%', height: '100%' }}/>
+            {/* <Icon name="google" size={24} color="#000" /> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialLoginButton}>
+            <Icon name="apple" size={24} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialLoginButton}>
+            <Icon name="facebook" size={24} color="#3D4DA6" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.altTextFooter}>Create An Account <Text style={{color: 'red', fontWeight: 'bold'}}>Sign Up</Text></Text>
+      </View>
     </View>
   );
 }
@@ -79,7 +134,6 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "left",
     fontWeight: "bold",
-
   },
   regularText: {
     fontSize: 24,
@@ -91,21 +145,65 @@ const styles = StyleSheet.create({
   inputBox: {
     height: 55,
     padding: 15,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 10,
-    margin: 12,
+
+    // margin: 12,
     fontSize: 16,
     backgroundColor: "#EDEFEE",
   },
   button: {
-    padding: 10,
-    marginVertical: 8,
-    color: "black",
-    backgroundColor: "#EE9972",
-    width: "50%",
+    padding: 12,
+    marginVertical: 40,
+    color: "white",
+    backgroundColor: "#F83758",
+    width: "100%",
     alignSelf: "center",
-    borderRadius: 20,
+    borderRadius: 5,
     fontWeight: "bold",
   },
+  alternativeLoginContainer: {
+    flex: 1,
+    // justifyContent: "flex-start",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  socialLoginContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  socialLoginButton: {
+    width: 50,
+    height: 50,
+    // padding: 10,
+    margin: 10,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FCF3F6",
+    borderColor: "#F83758",
+    borderWidth: 1,
+  },
+  // socialLoginButtonText: {
+  //   color: "white",
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  // },
+  altTextHeader: {
+    fontSize: 16,
+    padding: 20,
+    marginVertical: 8,
+    color: "black",
+    textAlign: "center",
+    opacity: 0.7,
+  }, 
+  altTextFooter:{
+    fontSize: 16,
+    padding: 20,
+    marginVertical: 0,
+    color: "black",
+    textAlign: "center",
+    opacity: 0.7,
+  }
+  
 });
