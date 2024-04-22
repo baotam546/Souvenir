@@ -3,12 +3,14 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const productImg = require("../assets/teddy.jpg");
 
 const ShoppingBagScreen = () => {
   const { navigate } = useNavigation();
-
+  const item = useSelector((state:any) => state.cart);
+  const [cartItems, setCartItems] = React.useState(item.data);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
