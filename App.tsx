@@ -1,16 +1,16 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useContext, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import TabNavigator from "./navigation/TabNavigator";
+import { AuthProvider } from "./context/AuthContext";
+import AppNav from "./navigation/AppNav";
 
-// const Drawer = createDrawerNavigator();
 
 export default function App() {
+ 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider>
+        <AppNav/>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }

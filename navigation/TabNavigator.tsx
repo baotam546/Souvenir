@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { CheckOutStackNavigator, MainStackNavigator } from "./StackNavigator";
+import { CheckOutStackNavigator,HomeStackNavigator } from "./StackNavigator";
 import { MaterialIcons } from "@expo/vector-icons";
 import Header from "../components/Header";
 const Tab = createBottomTabNavigator();
@@ -15,12 +15,12 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="home"
-        component={MainStackNavigator}
+        component={HomeStackNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <MaterialIcons name="home" size={size} color={color} />
           ),
-          header: () => <Header />,
         }}
       />
 
