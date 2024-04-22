@@ -8,10 +8,11 @@ import Colors from "../constants/Colors";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import Cart from "./Cart";
 
 const Header = () => {
   const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
@@ -21,9 +22,7 @@ const Header = () => {
         <View
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
-          <TouchableOpacity>
-            <Ionicons name="cart-outline" size={24} />
-          </TouchableOpacity>
+          <Cart/>
           <TouchableOpacity>
             <Avatar
               size={32}

@@ -8,6 +8,7 @@ import Colors from "../constants/Colors";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import Cart from "./Cart";
 
 interface Props{
     title: string
@@ -28,9 +29,7 @@ const HeaderWithBackButton: React.FC<Props>= ({
         <View
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
-          <TouchableOpacity>
-            <Ionicons name="cart-outline" size={24} />
-          </TouchableOpacity>
+          <Cart/>
           <TouchableOpacity>
             <Avatar
               size={32}

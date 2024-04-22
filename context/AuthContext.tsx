@@ -19,15 +19,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState("");
 
+  // const login = async (username: string, password: string) => {
+  //   try {
+  //     // setIsLoading(true);
+  //     const res = await loginApi.login(username, password);
+  //     console.log("login res", res);
+  //     if (res.status == 200) {
+  //       const token = res.data.accessToken;
+  //       AsyncStorage.setItem("userToken", token);
+  //     }
+
+  //   } catch (error) {
+  //     console.log("login error", error);
+  //   }
+  // };
+
   const login = async (username: string, password: string) => {
     try {
-    //   setIsLoading(true);
-    //   const res = await loginApi.login(username, password);
-    console.log("login")
-    const res = await axios.post("http://10.0.2.2:3000/api/auth/login", {
-        username: username,
-        password: password,
-    })
+      // setIsLoading(true);
+      console.log('login')
+      const res = await axios.post("https://59e3-171-239-141-239.ngrok-free.app/api/auth/login", { username, password });
+      console.log("login res", res);
       if (res.status == 200) {
         const token = res.data.accessToken;
         AsyncStorage.setItem("userToken", token);
@@ -38,6 +50,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+ 
+  
  
 
   const logout = () => {

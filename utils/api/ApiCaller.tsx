@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const defaultURL = "http://localhost:3000/api";
+const defaultURL = "https://3376-2001-ee0-d788-bc30-44c3-90f9-149e-de2f.ngrok-free.app/api";
 
 interface PublicCallParams {
     method: string;

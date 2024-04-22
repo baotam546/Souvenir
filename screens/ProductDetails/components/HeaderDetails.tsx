@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import SearchBar from "../../../components/SearchBar";
 import Colors from "../../../constants/Colors";
+import Cart from "../../../components/Cart";
 
 const HeaderDetails: React.FC= (
 
@@ -24,9 +25,7 @@ const HeaderDetails: React.FC= (
         <View
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
-          <TouchableOpacity>
-            <Ionicons name="cart-outline" size={24} />
-          </TouchableOpacity>
+          <Cart/>
           <TouchableOpacity>
             <Avatar
               size={32}
