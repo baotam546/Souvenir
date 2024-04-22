@@ -38,6 +38,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+ 
+
   const logout = () => {
     setIsLoading(true);
     setUserToken("");

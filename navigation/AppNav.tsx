@@ -18,7 +18,8 @@ const AppNav = () => {
   }
   return (
     <NavigationContainer>
-    {userToken ? <TabNavigator /> : <AuthNavigator />}
+    {/* {userToken ? <TabNavigator /> : <AuthNavigator />} */}
+    <TabNavigator/>
   </NavigationContainer>
   )
 }

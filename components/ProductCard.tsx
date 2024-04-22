@@ -17,7 +17,7 @@ const ProductCard = () => {
     <TouchableOpacity
       style={{
         height: "auto",
-        width: "auto",
+        width: 170,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -35,7 +35,7 @@ const ProductCard = () => {
       <View
         style={{
           height: "auto",
-          width: "auto",
+          width: 170,
           justifyContent: "center",
           marginRight: 10,
         }}
@@ -58,7 +58,7 @@ const ProductCard = () => {
         <View
           style={{
             height: "auto",
-
+            width: "auto",
             backgroundColor: "white",
             padding: 10,
             rowGap: 5,
