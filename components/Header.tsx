@@ -7,9 +7,7 @@ import Search from "./SearchBar";
 import Colors from "../constants/Colors";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
-import { useSelector } from "react-redux";
 import Cart from "./Cart";
 
 const Header = () => {

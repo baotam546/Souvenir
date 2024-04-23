@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     } catch (error) {
       console.log("login error", error);
+      setIsLoading(false);
     }
   };
 
