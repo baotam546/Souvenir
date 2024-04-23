@@ -11,6 +11,7 @@ const TabNavigator = () => {
         tabBarShowLabel: false,
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "gray",
+        unmountOnBlur:true
       }}
     >
       <Tab.Screen

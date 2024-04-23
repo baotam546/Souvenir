@@ -44,13 +44,11 @@ const ProductDetailsScreen = () => {
   const fetchData  = async() => {
     try {
       const res = await axios.get(`product/?id=${item._id}`);
-      // setIsLoading(true);
       if (res.status === 200) {
         setProduct(res.data.data)
       }
     } catch (error) {
       console.log("error", error);
-      // setIsLoading(false);
     }
   }
   useEffect(() => {

@@ -23,9 +23,16 @@ interface AuthContextType {
   isInvalid: boolean;
   resRegister: boolean;
 }
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType>({
+  login: () => {},
+  logout: () => {},
+  register: () => {},
+  userToken: "",
+  isLoading: false,
+  setIsLoading: () => {},
+  isInvalid: false,
+  resRegister: false,
+});
 interface AuthProviderProps {
   children: ReactNode;
 }
