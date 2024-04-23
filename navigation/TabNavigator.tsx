@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { CheckOutStackNavigator,HomeStackNavigator } from "./StackNavigator";
+import { CheckOutStackNavigator, HomeStackNavigator } from "./StackNavigator";
 import { MaterialIcons } from "@expo/vector-icons";
 import Header from "../components/Header";
 const Tab = createBottomTabNavigator();

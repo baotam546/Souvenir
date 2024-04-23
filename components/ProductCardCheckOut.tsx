@@ -1,6 +1,13 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const imageCard = require("../assets/teddy.jpg");
@@ -17,14 +24,18 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   const { navigate } = useNavigation();
   const [quantity, setQuantity] = useState(1);
 
+  const handleIncreaseQuantity = () => {
+    return setQuantity(quantity + 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[
-        styles.cardContainer,
-        { borderColor: isSelect ? "blue" : "#CACACA", borderWidth: 2 },
-      ]}
-    >
+    <View style={styles.cardContainer}>
       <View style={styles.cardTop}>
         <View style={{ width: 150, height: 150 }}>
           <Image source={imageCard} style={styles.img} />
@@ -38,9 +49,34 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
             <Ionicons name="star" color={"orange"} />
           </View>
           <View style={styles.priceBox}>
-            <Text style={{ fontSize: 24, fontWeight: "bold" }}>$ 34.00</Text>
+            <TouchableOpacity
+              onPress={handleDecreaseQuantity}
+              style={{ width: 30, alignItems: "center" }}
+            >
+              <AntDesign name="minus" size={16} />
+            </TouchableOpacity>
+            <TextInput
+              value={quantity.toString()}
+              keyboardType={"numeric"}
+              style={{
+                borderWidth: 1,
+                textAlign: "center",
+                width: 50,
+                height: 40,
+              }}
+            />
+            <TouchableOpacity
+              onPress={handleIncreaseQuantity}
+              style={{ width: 30, alignItems: "center" }}
+            >
+              <AntDesign name="plus" size={16} />
+            </TouchableOpacity>
           </View>
         </View>
+
+        <TouchableOpacity style={{ marginTop: 5, marginLeft: 10 }}>
+          <Ionicons name="trash-bin-outline" size={24} color="red" />
+        </TouchableOpacity>
       </View>
 
       <View
@@ -48,10 +84,10 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
       ></View>
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ fontWeight: "bold" }}>Total Order (1): </Text>
-        <Text style={{ fontWeight: "bold" }}>$ 34.00</Text>
+        <Text style={{ fontWeight: "bold" }}>Total Order ({quantity}): </Text>
+        <Text style={{ fontWeight: "bold" }}>$ {34.0 * quantity}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -68,7 +104,7 @@ const styles = StyleSheet.create({
   },
   cardTop: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     columnGap: 10,
   },
   img: {
@@ -77,7 +113,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 10,
   },
-  info: { rowGap: 10 },
+  info: { rowGap: 10, marginTop: 5 },
   productName: {
     fontSize: 20,
     fontWeight: "bold",
@@ -89,12 +125,13 @@ const styles = StyleSheet.create({
   },
 
   priceBox: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    width: "auto",
     borderWidth: 1,
     borderColor: "#CACACA",
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
+    columnGap: 10,
   },
 });
 
