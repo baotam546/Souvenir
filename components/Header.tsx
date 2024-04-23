@@ -9,6 +9,8 @@ const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
+import { useSelector } from "react-redux";
+import Cart from "./Cart";
 
 const Header = () => {
   const navigation = useNavigation();
@@ -24,9 +26,7 @@ const Header = () => {
         <View
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
-          <TouchableOpacity>
-            <Ionicons name="cart-outline" size={24} />
-          </TouchableOpacity>
+          <Cart/>
           <TouchableOpacity onPress={()=>{logout && logout()}}>
             <Avatar
               size={32}

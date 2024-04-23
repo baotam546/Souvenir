@@ -14,6 +14,7 @@ import {
 import { Input } from "@rneui/themed";
 import { useNavigation  } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type RootStackParamList = {
   Home: undefined;

@@ -6,6 +6,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
 import About from "../screens/About";
+import CheckoutScreen from "../screens/CheckoutScreen";
+import ShoppingBagScreen from "../screens/ShoppingBagScreen";
+import PaycheckScreen from "../screens/PaycheckScreen";
 import ProductListScreen from "../screens/ProductList/ProductListScreen";
 import HeaderWithBackButton from "../components/HeaderWithBackButton";
 import Header from "../components/Header";
@@ -48,5 +51,14 @@ const SearchStackNavigator = () => {
   );
 };
 
+const CheckOutStackNavigator = () => {
+  return (
+    <Stack.Navigator initialRouteName="shopping-screen">
+      <Stack.Screen name="shopping-screen" component={ShoppingBagScreen} />
+      <Stack.Screen name="checkout-screen" component={CheckoutScreen} />
+      <Stack.Screen name="paycheck-screen" component={PaycheckScreen} />
+    </Stack.Navigator>
+  );
+};
 
-export { SearchStackNavigator,  HomeStackNavigator };
+export {CheckOutStackNavigator, SearchStackNavigator,  HomeStackNavigator };

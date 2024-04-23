@@ -4,6 +4,8 @@ import MainCarousel from '../../components/MainCarousel';
 import DetailsCarousel from './components/Carousel';
 import { Ionicons } from '@expo/vector-icons';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { useDispatch } from 'react-redux';
+import { addItemstoCart } from '../../redux/slices/CartSlice';
 
 
 const Category = [
@@ -22,6 +24,7 @@ const ProductDetailsScreen = () => {
   const formatPriceInVND = (price:number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
+  const dispatch = useDispatch();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -55,7 +58,12 @@ const ProductDetailsScreen = () => {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.cartButton}>
+        <TouchableOpacity style={styles.cartButton}
+        onPress={
+          ()=>{
+            dispatch(addItemstoCart({id:'1', name:"Teddy", price:100000, quantity:1}))
+          }}
+        >
           <Ionicons name='cart' size={20} color="white"/>
           <Text style={styles.buttonText}>
             Add to cart

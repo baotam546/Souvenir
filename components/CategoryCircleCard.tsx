@@ -3,8 +3,11 @@ import React from "react";
 import { Avatar } from "@rneui/base";
 import { TouchableOpacity } from "react-native";
 const categoryImg = require("../assets/teddy.jpg");
+interface CategoryCircleCardProps {
+  name: string;
 
-const CategoryCircleCard = ({ name }) => {
+}
+const CategoryCircleCard: React.FC<CategoryCircleCardProps> = ({ name }) => {
   return (
     <TouchableOpacity style={styles.container}>
       <Avatar size={60} rounded source={categoryImg} />
