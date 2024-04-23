@@ -41,56 +41,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (username: string, password: string) => {
     try {
-      // setIsLoading(true);
-
+      setIsLoading(true);
       const res = await loginApi.login(username, password);
-      console.log("login res", res);
       if (res.status == 200) {
         console.log("response data", res.data);
         const token = res.data.data.accessToken;
         console.log("token", token);
         setUserToken(token)
-        AsyncStorage.setItem("userToken", token);
+        await AsyncStorage.setItem("userToken", token);
+        setIsLoading(false);
       }
-      console.log("login");
-      setIsLoading(true);
-      const instance = axios.create({
-        baseURL: `${baseURL}/auth/login`,
-      });
-      // instance.interceptors.request.use((config) => {
-      //   config.headers.Authorization = `Bearer ${userToken}`;
-      //   return config;
-      // });
-      instance.interceptors.response.use(
-        (response) => {
-          return response;
-        },
-        (error) => {
-          if (error.response.status !== 200) {
-            setIsInvalid(true);
-            setIsLoading(false);
-            ToastAndroid.show("Login failed!", ToastAndroid.SHORT);
-          }
-          return Promise.reject(error);
-        }
-      );
-
-      if (res.status == 200) {
-        console.log("login success", res.data.data.accessToken);
-
-        const token = res.data.data.accessToken;
-        if (token) {
-          AsyncStorage.setItem("userToken", token);
-          setIsInvalid(false);
-          setUserToken(token);
-          setIsLoading(false);
-          ToastAndroid.show("Login success!", ToastAndroid.SHORT);
-        } else {
-          console.log("Token is null or undefined");
-        }
-      } else {
-        console.log("login failed", res);
-      }
+      
     } catch (error) {
       console.log("login error", error);
     }

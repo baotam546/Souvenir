@@ -54,8 +54,8 @@ const SearchStackNavigator = () => {
 const CheckOutStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="shopping-screen">
-      <Stack.Screen name="shopping-screen" component={ShoppingBagScreen} />
       <Stack.Screen name="checkout-screen" component={CheckoutScreen} />
+      <Stack.Screen name="shopping-screen" component={ShoppingBagScreen} />
       <Stack.Screen name="paycheck-screen" component={PaycheckScreen} />
     </Stack.Navigator>
   );
