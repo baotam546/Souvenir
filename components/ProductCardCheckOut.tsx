@@ -9,21 +9,31 @@ import {
 import React, { useState } from "react";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { reduceItemFromCart, removeItemFromCart } from "../redux/slices/CartSlice";
 
 const imageCard = require("../assets/teddy.jpg");
 
 interface ProductCardCheckOutProps {
   isSelect: boolean;
   onPress: () => void;
+  item:itemCart
 }
-
+type itemCart={
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  productImage: string;
+} 
 const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   isSelect,
   onPress,
+  item
 }) => {
   const { navigate } = useNavigation();
-  const [quantity, setQuantity] = useState(1);
-
+  const [quantity, setQuantity] = useState(item.quantity);
+  const dispatch = useDispatch();
   const handleIncreaseQuantity = () => {
     return setQuantity(quantity + 1);
   };
@@ -31,6 +41,9 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+      dispatch(reduceItemFromCart(item))
+    }else{
+      dispatch(removeItemFromCart(item))
     }
   };
 
@@ -38,11 +51,11 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
     <View style={styles.cardContainer}>
       <View style={styles.cardTop}>
         <View style={{ width: 150, height: 150 }}>
-          <Image source={imageCard} style={styles.img} />
+          <Image source={{uri: item.productImage}} style={styles.img} />
         </View>
 
         <View style={styles.info}>
-          <Text style={styles.productName}>Teddy</Text>
+          <Text style={styles.productName}>{item.name}</Text>
           <Text style={styles.variation}>Variation: </Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text>4.8 </Text>
@@ -85,7 +98,7 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={{ fontWeight: "bold" }}>Total Order ({quantity}): </Text>
-        <Text style={{ fontWeight: "bold" }}>$ {34.0 * quantity}</Text>
+        <Text style={{ fontWeight: "bold" }}>$ {item.price * quantity}</Text>
       </View>
     </View>
   );

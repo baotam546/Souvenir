@@ -105,7 +105,9 @@ const ProductDetailsScreen = () => {
               {id:product._id, 
                 name:product.name, 
                 price:product.price, 
-                quantity:product.quantity}))
+                quantity:1,
+                productImage:product.productImage[0],
+              }))
           }}
         >
           <Ionicons name='cart' size={20} color="white"/>
