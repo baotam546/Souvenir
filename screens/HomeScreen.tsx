@@ -18,7 +18,6 @@ import { useNavigation } from "@react-navigation/native";
 import { productApi } from "../utils/api/product";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 
-
 const productImg = require("../assets/teddy.jpg");
 
 const Category = [
@@ -45,23 +44,20 @@ const HomeScreen = () => {
   //       console.log("productList", productList);
   //     }
   //   } catch (error) {
-      
+
   //   }
   // }
   const fetchData = async () => {
     try {
       const res = await axios.get(`product/?page=1&limit=999`);
       if (res.status === 200) {
-        setProductList(res.data.data.data)
+        setProductList(res.data.data.data);
         //       console.log("productList", productList);
       }
-
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
   return (
     <ScrollView style={styles.scrollViewContainer}>
@@ -135,23 +131,27 @@ const HomeScreen = () => {
         </View>
       </View>
 
-     {productList.length > 0 && (
-       <View
-       style={{
-         flex: 1,
-         height: "auto",
-         paddingVertical: 10,
-         marginVertical: 10
-       }}
-     >
-       <FlatList
-         horizontal
-         data={productList}
-         renderItem={({ item }) => <ProductCard item={item} />}
-         keyExtractor={(item: any) => item.id}
-       />
-     </View>
-     )}
+      {productList.length > 0 && (
+        <View
+          style={{
+            flex: 1,
+            height: "auto",
+            paddingVertical: 10,
+            marginVertical: 10,
+          }}
+        >
+          <FlatList
+            horizontal
+            data={productList}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            keyExtractor={(item: any) => item.id}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };

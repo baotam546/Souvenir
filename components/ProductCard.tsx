@@ -19,15 +19,16 @@ interface ProductCardProps {
     quantity: number;
     productImage: string;
   };
-
 }
-const ProductCard: React.FC<ProductCardProps> = ({item}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   console.log("item", item);
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={{
+        marginBottom: 10,
+        marginHorizontal: 5,
         height: "auto",
         width: 170,
         shadowColor: "#000",
@@ -40,8 +41,8 @@ const ProductCard: React.FC<ProductCardProps> = ({item}) => {
 
         elevation: 9,
       }}
-      onPress={()=>{
-        navigation.navigate('productDetails-screen', item);
+      onPress={() => {
+        navigation.navigate("productDetails-screen", item);
       }}
     >
       <View
@@ -52,7 +53,6 @@ const ProductCard: React.FC<ProductCardProps> = ({item}) => {
           marginRight: 10,
         }}
       >
-        {/* product img */}
         <View style={{ height: 175, width: 170 }}>
           <Image
             source={{ uri: item.productImage[0] }}
