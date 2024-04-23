@@ -6,11 +6,12 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ProductCardCheckOut from "../components/ProductCardCheckOut";
 import { useNavigation } from "@react-navigation/native";
 import AddressModal from "../components/AddressModal";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -36,6 +37,8 @@ const data = [
 
 const CheckoutScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const items= useSelector((state:any)=> state.cart.data);
+  const [cartItem, setCartItem] = useState(items);
   const { navigate } = useNavigation();
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
 
@@ -48,6 +51,11 @@ const CheckoutScreen = () => {
       }
     });
   };
+
+  useEffect(() => {
+    // Update cartItem state whenever cart data changes in the Redux store
+    setCartItem(items);
+  }, [items]);
 
   return (
     <View style={styles.container}>
@@ -82,9 +90,10 @@ const CheckoutScreen = () => {
         <Text style={styles.shoppingText}>Shopping Cart List</Text>
         <View style={{ flex: 1 }}>
           <FlatList
-            data={data}
+            data={cartItem}
             renderItem={({ item }) => (
               <ProductCardCheckOut
+                item={item}
                 isSelect={selectedCards.includes(item.id)}
                 onPress={() => handleCardPress(item.id)}
               />

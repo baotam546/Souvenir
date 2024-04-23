@@ -61,11 +61,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
     } catch (error) {
       console.log("login error", error);
+      setIsLoading(false);
     }
   };
 
 
-  const logout =async () => {
+  const logout = async () => {
     try{
     setIsLoading(true);
     setUserToken("");

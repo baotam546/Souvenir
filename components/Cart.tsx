@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
     const cart = useSelector((state:any)=> state.cart);
-    console.log(cart);
     const navigate = useNavigation();
     const dataLength = cart.data?.length ?? 0;
   return (
