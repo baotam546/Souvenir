@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { reduceItemFromCart, removeItemFromCart } from "../redux/slices/CartSlice";
+import { addItemstoCart, reduceItemFromCart, removeItemFromCart } from "../redux/slices/CartSlice";
 
 const imageCard = require("../assets/teddy.jpg");
 
@@ -35,7 +35,8 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   const [quantity, setQuantity] = useState(item.quantity);
   const dispatch = useDispatch();
   const handleIncreaseQuantity = () => {
-    return setQuantity(quantity + 1);
+    setQuantity(quantity + 1);
+    dispatch(addItemstoCart(item));
   };
 
   const handleDecreaseQuantity = () => {

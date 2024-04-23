@@ -1,11 +1,11 @@
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import MainCarousel from '../../components/MainCarousel';
 import DetailsCarousel from './components/Carousel';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItemstoCart } from '../../redux/slices/CartSlice';
+import { addItemstoCart, reduceItemFromCart, removeItemFromCart } from '../../redux/slices/CartSlice';
 import { useRoute } from '@react-navigation/native';
 import useAxiosPrivate from '../../hooks/axiosPrivate';
 import { AuthContext } from '../../context/AuthContext';
@@ -40,7 +40,18 @@ const ProductDetailsScreen = () => {
   const axios = useAxiosPrivate();
   const [product,setProduct] = React.useState<Product>();
   const item:any = route.params
+  const [quantity, setQuantity] = useState(1);
 
+
+  const handleIncreaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
   const fetchData  = async() => {
     try {
       const res = await axios.get(`product/?id=${item._id}`);
@@ -97,6 +108,30 @@ const ProductDetailsScreen = () => {
           {product?.description || ''}
         </Text>
       </View>
+      <View style={styles.priceBox}>
+            <TouchableOpacity
+              onPress={handleDecreaseQuantity}
+              style={{ width: 30, alignItems: "center" }}
+            >
+              <AntDesign name="minus" size={16} />
+            </TouchableOpacity>
+            <TextInput
+              value={quantity.toString()}
+              keyboardType={"numeric"}
+              style={{
+                borderWidth: 1,
+                textAlign: "center",
+                width: 50,
+                height: 40,
+              }}
+            />
+            <TouchableOpacity
+              onPress={handleIncreaseQuantity}
+              style={{ width: 30, alignItems: "center" }}
+            >
+              <AntDesign name="plus" size={16} />
+            </TouchableOpacity>
+          </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.cartButton}
         onPress={
@@ -105,7 +140,7 @@ const ProductDetailsScreen = () => {
               {id:product._id, 
                 name:product.name, 
                 price:product.price, 
-                quantity:1,
+                quantity:quantity,
                 productImage:product.productImage[0],
               }))
           }}
@@ -189,5 +224,14 @@ const styles = StyleSheet.create(
       fontSize:20,
       color:"white",
       fontWeight:"bold"
-    }
+    },
+    priceBox: {
+      width: "auto",
+      borderWidth: 1,
+      borderColor: "#CACACA",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+      columnGap: 10,
+    },
   })
