@@ -14,6 +14,7 @@ import HeaderWithBackButton from "../components/HeaderWithBackButton";
 import Header from "../components/Header";
 import ProductDetailsScreen from "../screens/ProductDetails/ProductDetailsScreen";
 import HeaderDetails from "../screens/ProductDetails/components/HeaderDetails";
+import Paypal from "../screens/Paypal";
 
 const Stack = createNativeStackNavigator();
 const HomeStackNavigator = () => {

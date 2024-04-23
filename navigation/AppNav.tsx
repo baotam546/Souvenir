@@ -12,17 +12,17 @@ const AppNav = () => {
   console.log("userToken", userToken);
   if (isLoading) {
     return (
-        <View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
-            <ActivityIndicator size="large"/>
-        </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
     );
   }
   return (
     <NavigationContainer>
-    {userToken ? <TabNavigator /> : <AuthNavigator />}
-  </NavigationContainer>
+      {userToken ? <TabNavigator /> : <AuthNavigator />}
+      {/* <TabNavigator /> */}
+    </NavigationContainer>
   );
 };
-
 
 export default AppNav;

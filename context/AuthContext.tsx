@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isInvalid, setIsInvalid] = useState(false);
   const [resRegister, setResRegister] = useState(false);
 
-
   const login = async (username: string, password: string) => {
     try {
       setIsLoading(true);
@@ -54,27 +53,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.log("response data", res.data);
         const token = res.data.data.accessToken;
         console.log("token", token);
-        setUserToken(token)
+        setUserToken(token);
         await AsyncStorage.setItem("userToken", token);
         setIsLoading(false);
       }
-      
     } catch (error) {
       console.log("login error", error);
     }
   };
 
-
-  const logout =async () => {
-    try{
-    setIsLoading(true);
-    setUserToken("");
-    await AsyncStorage.removeItem("userToken");
-    setIsLoading(false);
-  } catch (error) {
-    console.log("logout error", error);
-  }
-    
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      setUserToken("");
+      await AsyncStorage.removeItem("userToken");
+      setIsLoading(false);
+    } catch (error) {
+      console.log("logout error", error);
+    }
   };
 
   const isLoggedIn = async () => {
@@ -153,7 +149,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading,
     isInvalid,
     resRegister,
-
   };
 
   useEffect(() => {
