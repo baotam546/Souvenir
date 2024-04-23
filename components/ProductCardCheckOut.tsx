@@ -1,18 +1,29 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const imageCard = require("../assets/teddy.jpg");
 
-const ProductCardCheckOut = () => {
+interface ProductCardCheckOutProps {
+  isSelect: boolean;
+  onPress: () => void;
+}
+
+const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
+  isSelect,
+  onPress,
+}) => {
   const { navigate } = useNavigation();
+  const [quantity, setQuantity] = useState(1);
+
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigate("shopping-screen");
-      }}
-      style={styles.cardContainer}
+      onPress={onPress}
+      style={[
+        styles.cardContainer,
+        { borderColor: isSelect ? "blue" : "#CACACA", borderWidth: 2 },
+      ]}
     >
       <View style={styles.cardTop}>
         <View style={{ width: 150, height: 150 }}>
