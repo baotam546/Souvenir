@@ -19,12 +19,20 @@ interface AuthContextType {
   ) => void;
   userToken: string;
   isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isInvalid: boolean;
   resRegister: boolean;
 }
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType>({
+  login: () => {},
+  logout: () => {},
+  register: () => {},
+  userToken: "",
+  isLoading: false,
+  setIsLoading: () => {},
+  isInvalid: false,
+  resRegister: false,
+});
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -37,65 +45,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isInvalid, setIsInvalid] = useState(false);
   const [resRegister, setResRegister] = useState(false);
 
+
   const login = async (username: string, password: string) => {
     try {
-      // setIsLoading(true);
-      console.log("login");
-      const res = await axios.post(
-        "https://7e4e-171-232-104-45.ngrok-free.app/api/auth/login",
-        { username, password }
-      );
-      console.log("login res", res);
-
       setIsLoading(true);
-      const instance = axios.create({
-        baseURL: `${baseURL}/auth/login`,
-      });
-      // instance.interceptors.request.use((config) => {
-      //   config.headers.Authorization = `Bearer ${userToken}`;
-      //   return config;
-      // });
-      instance.interceptors.response.use(
-        (response) => {
-          return response;
-        },
-        (error) => {
-          if (error.response.status !== 200) {
-            // console.log("login failed", error.response);
-            setIsInvalid(true);
-            setIsLoading(false);
-            ToastAndroid.show("Login failed!", ToastAndroid.SHORT);
-          }
-          return Promise.reject(error);
-        }
-      );
-
+      const res = await loginApi.login(username, password);
       if (res.status == 200) {
-        console.log("login success", res.data.data.accessToken);
-
+        console.log("response data", res.data);
         const token = res.data.data.accessToken;
-        if (token) {
-          AsyncStorage.setItem("userToken", token);
-          setIsInvalid(false);
-          setUserToken(token);
-          setIsLoading(false);
-          ToastAndroid.show("Login success!", ToastAndroid.SHORT);
-        } else {
-          console.log("Token is null or undefined");
-        }
-      } else {
-        console.log("login failed", res);
+        console.log("token", token);
+        setUserToken(token)
+        await AsyncStorage.setItem("userToken", token);
+        setIsLoading(false);
       }
+      
     } catch (error) {
       console.log("login error", error);
     }
   };
 
-  const logout = () => {
+
+  const logout =async () => {
+    try{
     setIsLoading(true);
     setUserToken("");
-    AsyncStorage.removeItem("userToken");
+    await AsyncStorage.removeItem("userToken");
     setIsLoading(false);
+  } catch (error) {
+    console.log("logout error", error);
+  }
+    
   };
 
   const isLoggedIn = async () => {
@@ -171,8 +150,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     register,
     userToken,
     isLoading,
+    setIsLoading,
     isInvalid,
     resRegister,
+
   };
 
   useEffect(() => {

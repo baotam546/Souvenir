@@ -11,8 +11,20 @@ import { useNavigation } from "@react-navigation/native";
 
 const productImg = require("../assets/teddy.jpg");
 
-const ProductCard = () => {
+interface ProductCardProps {
+  item: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    productImage: string;
+  };
+
+}
+const ProductCard: React.FC<ProductCardProps> = ({item}) => {
+  console.log("item", item);
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={{
@@ -29,7 +41,7 @@ const ProductCard = () => {
         elevation: 9,
       }}
       onPress={()=>{
-        navigation.navigate('productDetails-screen');
+        navigation.navigate('productDetails-screen', item);
       }}
     >
       <View
@@ -43,7 +55,7 @@ const ProductCard = () => {
         {/* product img */}
         <View style={{ height: 175, width: 170 }}>
           <Image
-            source={productImg}
+            source={{ uri: item.productImage[0] }}
             resizeMode="cover"
             style={{
               width: "100%",
@@ -66,9 +78,9 @@ const ProductCard = () => {
             borderBottomRightRadius: 10,
           }}
         >
-          <Text style={styles.productName}>Teddy</Text>
+          <Text style={styles.productName}>{item.name}</Text>
           <Text style={styles.shortDes}>Lorem ipsum dolor</Text>
-          <Text style={styles.price}>$1500</Text>
+          <Text style={styles.price}>${item.price}</Text>
         </View>
       </View>
     </TouchableOpacity>

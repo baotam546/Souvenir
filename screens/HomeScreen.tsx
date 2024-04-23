@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList } from "react-native";
 import CategoryCircleCard from "../components/CategoryCircleCard";
 import MainCarousel from "../components/MainCarousel";
@@ -15,6 +15,8 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import ProductCard from "../components/ProductCard";
 import { useNavigation } from "@react-navigation/native";
+import { productApi } from "../utils/api/product";
+import useAxiosPrivate from "../hooks/axiosPrivate";
 
 
 const productImg = require("../assets/teddy.jpg");
@@ -31,7 +33,36 @@ const Product = [
 ];
 
 const HomeScreen = () => {
+  const axios = useAxiosPrivate();
   const navigation = useNavigation();
+  const [productList, setProductList] = React.useState([]);
+  // const fetchData = async () => {
+  //   try {
+  //     const res = await productApi.getAllProductList();
+  //     console.log("res", res.data.data);
+  //     if(res.status == 200){
+  //       setProductList(res.data.data.data)
+  //       console.log("productList", productList);
+  //     }
+  //   } catch (error) {
+      
+  //   }
+  // }
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`product/?page=1&limit=999`);
+      if (res.status === 200) {
+        setProductList(res.data.data.data)
+        //       console.log("productList", productList);
+      }
+
+    } catch (error) {
+      
+    }
+  }
+  useEffect(() => {
+    fetchData()
+  }, []);
   return (
     <ScrollView style={styles.scrollViewContainer}>
       <View style={{ flex: 1, paddingHorizontal: 10 }}>
@@ -104,19 +135,23 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          height: "auto",
-          paddingVertical: 10,
-        }}
-      >
-        <FlatList
-          horizontal
-          data={Product}
-          renderItem={() => <ProductCard />}
-        />
-      </View>
+     {productList.length > 0 && (
+       <View
+       style={{
+         flex: 1,
+         height: "auto",
+         paddingVertical: 10,
+         marginVertical: 10
+       }}
+     >
+       <FlatList
+         horizontal
+         data={productList}
+         renderItem={({ item }) => <ProductCard item={item} />}
+         keyExtractor={(item: any) => item.id}
+       />
+     </View>
+     )}
     </ScrollView>
   );
 };

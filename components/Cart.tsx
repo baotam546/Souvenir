@@ -11,7 +11,7 @@ const Cart = () => {
     const dataLength = cart.data?.length ?? 0;
   return (
     <TouchableOpacity 
-        onPress={()=>{navigate.navigate('shopping-screen')}}
+        onPress={()=>{navigate.navigate("checkout",{screen:'checkout-screen'})}}
     >
         <Ionicons name="cart-outline" size={34} />
         <View style={{

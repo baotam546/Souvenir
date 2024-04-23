@@ -1,11 +1,14 @@
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import MainCarousel from '../../components/MainCarousel';
 import DetailsCarousel from './components/Carousel';
 import { Ionicons } from '@expo/vector-icons';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemstoCart } from '../../redux/slices/CartSlice';
+import { useRoute } from '@react-navigation/native';
+import useAxiosPrivate from '../../hooks/axiosPrivate';
+import { AuthContext } from '../../context/AuthContext';
 
 
 const Category = [
@@ -18,22 +21,59 @@ const Product = [
   { id: 2, name: "Car" },
   { id: 3, name: "Book" },
 ];
+type Product = {
+  _id:string,
+  name:string,
+  price:number,
+  description:string,
+  category:string,
+  productImage:string[],
+  quantity:number,
+  brand:string,
+  createdAt:string,
+  updatedAt:string,
 
+}
 const width = Dimensions.get('window').width;
 const ProductDetailsScreen = () => {
+  const route = useRoute();
+  const axios = useAxiosPrivate();
+  const [product,setProduct] = React.useState<Product>();
+  const item:any = route.params
+
+  const fetchData  = async() => {
+    try {
+      const res = await axios.get(`product/?id=${item._id}`);
+      if (res.status === 200) {
+        setProduct(res.data.data)
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  },[])
   const formatPriceInVND = (price:number) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    return new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(price);
   };
+  if(!product){
+    return (
+      <View>
+        <Text>Something went wrong</Text>
+      </View>
+    )
+  }
   const dispatch = useDispatch();
   return (
     <ScrollView>
       <View style={styles.container}>
-        <DetailsCarousel/>
+        <DetailsCarousel image={product.productImage}/>
       </View>
       <View style={styles.detailsContainer}>
 
         <Text style={{fontSize:27, fontWeight:'bold'}}>
-          Teddy Bear
+          {product?.name || ''}
         </Text>
         <Text style={{fontSize:17, fontWeight:'400'}}>
           Toys
@@ -48,20 +88,24 @@ const ProductDetailsScreen = () => {
         </View>
         
         <Text style={{fontSize:22, fontWeight:'700'}}>
-          {formatPriceInVND(100000)}
+          {formatPriceInVND(product?.price || 0)}
         </Text>
         <Text style={{fontSize:20, fontWeight:'500'}}>
           Description
         </Text>
         <Text style={{fontSize:15, fontWeight:'400', color:'#abababf', marginBottom:20}}>
-        Perhaps the most iconic sneaker of all-time, this original "Chicago"? colorway is the cornerstone to any sneaker collection. Made famous in 1985 by Michael Jordan, the shoe has stood the test of time, becoming the most famous colorway of the Air Jordan 1. This 2015 release saw the ...More
+          {product?.description || ''}
         </Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.cartButton}
         onPress={
           ()=>{
-            dispatch(addItemstoCart({id:'1', name:"Teddy", price:100000, quantity:1}))
+            dispatch(addItemstoCart(
+              {id:product._id, 
+                name:product.name, 
+                price:product.price, 
+                quantity:product.quantity}))
           }}
         >
           <Ionicons name='cart' size={20} color="white"/>
