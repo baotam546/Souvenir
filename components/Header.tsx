@@ -1,5 +1,5 @@
 import { View, Platform, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { Avatar } from "@rneui/base";
@@ -8,11 +8,15 @@ import Colors from "../constants/Colors";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
 import { useSelector } from "react-redux";
 import Cart from "./Cart";
 
 const Header = () => {
   const navigation = useNavigation();
+  const authContext = useContext(AuthContext);
+  const logout = authContext?.logout;
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
@@ -23,7 +27,7 @@ const Header = () => {
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
           <Cart/>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{logout && logout()}}>
             <Avatar
               size={32}
               rounded

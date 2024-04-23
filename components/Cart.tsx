@@ -2,13 +2,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
     const cart = useSelector((state:any)=> state.cart);
     console.log(cart);
+    const navigate = useNavigation();
     const dataLength = cart.data?.length ?? 0;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity 
+        onPress={()=>{navigate.navigate('shopping-screen')}}
+    >
         <Ionicons name="cart-outline" size={34} />
         <View style={{
             width:20,
