@@ -25,16 +25,20 @@ const HomeStackNavigator = () => {
     >
       <Stack.Screen name="home-screen" component={HomeScreen} />
       <Stack.Screen
-      options={{
-        header: () => <HeaderWithBackButton title="All Items"/>
-       }}
-      name="productList-screen" component={ProductListScreen} />
+        options={{
+          header: () => <HeaderWithBackButton title="All Items" />,
+        }}
+        name="productList-screen"
+        component={ProductListScreen}
+      />
       <Stack.Screen name="about-screen" component={About} />
       <Stack.Screen
-      options={{
-       header: () => <HeaderDetails/>
-       }}
-      name= "productDetails-screen" component={ProductDetailsScreen}/>
+        options={{
+          header: () => <HeaderDetails />,
+        }}
+        name="productDetails-screen"
+        component={ProductDetailsScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -61,4 +65,4 @@ const CheckOutStackNavigator = () => {
   );
 };
 
-export {CheckOutStackNavigator, SearchStackNavigator,  HomeStackNavigator };
+export { CheckOutStackNavigator, SearchStackNavigator, HomeStackNavigator };
