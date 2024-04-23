@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -8,8 +8,13 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ScrollView,
+  ToastAndroid,
 } from "react-native";
 import { Input } from "@rneui/themed";
+
+import { useNavigation  } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
 
 type RootStackParamList = {
   Login: undefined;
@@ -25,12 +30,21 @@ type Props = {
 };
 
 export default function RegisterScreen({ navigation }: Props) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [login, setLogin] = useState(false);
+  const [familyName, setFamilyName] = useState("");
+  const [givenName, setGivenName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigation();
+  const authContext = useContext(AuthContext);
+  const register = authContext?.register;
+  
+  
+  // const [login, setLogin] = useState(false);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.headerText}>Create an{"\n"}account</Text>
 
       <View
@@ -42,8 +56,8 @@ export default function RegisterScreen({ navigation }: Props) {
       >
         <Input
           style={styles.inputBox}
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setUsername}
           placeholder={"Username or Email"}
           leftIcon={{
             type: "font-awesome",
@@ -75,7 +89,50 @@ export default function RegisterScreen({ navigation }: Props) {
             style: { opacity: 0.7 },
           }}
         />
-
+        <Input
+  style={styles.inputBox}
+  value={familyName}
+  onChangeText={setFamilyName}
+  placeholder={"Family Name"}
+  leftIcon={{
+    type: "font-awesome",
+    name: "user",
+    style: { opacity: 0.7 },
+  }}
+/>
+<Input
+  style={styles.inputBox}
+  value={givenName}
+  onChangeText={setGivenName}
+  placeholder={"Given Name"}
+  leftIcon={{
+    type: "font-awesome",
+    name: "user",
+    style: { opacity: 0.7 },
+  }}
+/>
+<Input
+  style={styles.inputBox}
+  value={phoneNumber}
+  onChangeText={setPhoneNumber}
+  placeholder={"Phone Number"}
+  leftIcon={{
+    type: "font-awesome",
+    name: "phone",
+    style: { opacity: 0.7 },
+  }}
+/>
+<Input
+  style={styles.inputBox}
+  value={email}
+  onChangeText={setEmail}
+  placeholder={"Email"}
+  leftIcon={{
+    type: "font-awesome",
+    name: "envelope",
+    style: { opacity: 0.7 },
+  }}
+/>
         <Text
           style={{
             marginHorizontal: 10,
@@ -92,7 +149,7 @@ export default function RegisterScreen({ navigation }: Props) {
           style={styles.button}
           onPress={() => {
             console.log(email, password);
-            setLogin(true);
+            register && register(username, password, confirmPassword, "customer", familyName, givenName, phoneNumber, email);
           }}
         >
           <Text
@@ -130,13 +187,13 @@ export default function RegisterScreen({ navigation }: Props) {
           I Already Have an Account
           </Text>
           <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}>
+          onPress={() => navigate.navigate('Login')}>
             <Text style={styles.altTextFooterNav}> Login</Text>
           </TouchableOpacity>
         
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -176,6 +233,8 @@ const styles = StyleSheet.create({
     padding: 0,
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
   },
   socialLoginContainer: {
     flexDirection: "row",
@@ -197,12 +256,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    marginVertical: 8,
+    marginTop: 8,
+    marginBottom: 40,
   },
   altTextHeader: {
     fontSize: 16,
     marginBottom: 8,
-    marginTop: 40,
+    // marginTop: 40,
     color: "black",
     textAlign: "center",
     opacity: 0.7,

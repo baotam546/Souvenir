@@ -2,12 +2,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { loginApi } from "../utils/api/login";
 import axios from "axios";
+import { ToastAndroid } from "react-native";
 
 interface AuthContextType {
   login: (username: string, password: string) => void;
   logout: () => void;
+  register: (username: string, 
+             password: string, 
+             confirmPassword: string,
+             accountType: string, 
+             familyName: string,
+             givenName: string,
+             phone: string,
+             email: string ) => void;
   userToken: string;
   isLoading: boolean;
+  isInvalid: boolean;
+  resRegister: boolean;
 }
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
@@ -15,28 +26,64 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 interface AuthProviderProps {
   children: ReactNode;
 }
+// change this URL to your local server using ngrok or deploy your server to the cloud
+const baseURL = " https://presumably-social-liger.ngrok-free.app/api";
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [resRegister, setResRegister] = useState(false);
 
   const login = async (username: string, password: string) => {
     try {
-    //   setIsLoading(true);
-    //   const res = await loginApi.login(username, password);
-    console.log("login")
-    const res = await axios.post("http://10.0.2.2:3000/api/auth/login", {
+      setIsLoading(true);
+      const instance = axios.create({
+        baseURL: `${baseURL}/auth/login`,
+      });
+      // instance.interceptors.request.use((config) => { 
+      //   config.headers.Authorization = `Bearer ${userToken}`;
+      //   return config;
+      // });
+      instance.interceptors.response.use((response) => {
+        return response;
+      }, (error) => {
+        if (error.response.status !== 200) {
+          // console.log("login failed", error.response);
+          setIsInvalid(true);
+          setIsLoading(false);
+          ToastAndroid.show("Login failed!", ToastAndroid.SHORT);
+          
+        }
+        return Promise.reject(error);
+      });
+        
+      const res = await instance.post("", {
         username: username,
         password: password,
-    })
+      });
       if (res.status == 200) {
-        const token = res.data.accessToken;
-        AsyncStorage.setItem("userToken", token);
+        console.log("login success", res.data.data.accessToken);
+        
+        const token = res.data.data.accessToken;
+        if (token) {
+          AsyncStorage.setItem("userToken", token);
+          setIsInvalid(false);
+          setUserToken(token);
+          setIsLoading(false);
+          ToastAndroid.show("Login success!", ToastAndroid.SHORT);
+        } else {
+          console.log("Token is null or undefined");
+        }
+      } else {
+        console.log("login failed", res);
       }
-
     } catch (error) {
       console.log("login error", error);
     }
   };
+
+  
 
   const logout = () => {
     setIsLoading(true);
@@ -56,11 +103,69 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // register function
+  const register = async (username: string,
+                          password: string, 
+                          confirmPassword: string,
+                          accountType: string,
+                          familyName: string,
+                          givenName: string,
+                          phone: string,
+                          email: string,
+                          ) => {
+    try {
+      setIsLoading(true);
+      const instance = axios.create({
+        baseURL: `${baseURL}/auth/register`,
+      });
+      instance.interceptors.response.use((response) => {
+        return response;
+      }, (error) => {
+        if (error.response.status !== 200) {
+          console.log("register failed", error.response);
+          setIsInvalid(false)
+          setResRegister(true);
+          setIsLoading(false);
+          ToastAndroid.show("Register failed!", ToastAndroid.SHORT);
+
+        }
+        return Promise.reject(error);
+      });
+      const res = await instance.post("", {
+        account: {
+          username: username,
+          password: password,
+          confirmPassword: confirmPassword,
+        },
+        accountType: accountType,
+        familyName: familyName,
+        givenName: givenName,
+        phone: phone,
+        email: email,
+      });
+      if (res.status == 200) {
+        console.log("register success", res.data);
+        setResRegister(false);
+          setIsLoading(false);
+          ToastAndroid.show("Register success!", ToastAndroid.SHORT);
+
+      } else {
+        console.log("register failed", res);
+      }
+    } catch (error) {
+      console.log("register error", error);
+    }
+  }
+ 
+
   const authContextValue: AuthContextType = {
     login,
     logout,
+    register,
     userToken,
     isLoading,
+    isInvalid,
+    resRegister,
   };
 
   useEffect(() => {

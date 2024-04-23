@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -9,6 +9,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from "react-native";
 import { Input } from "@rneui/themed";
 import { useNavigation  } from "@react-navigation/native";
@@ -33,9 +34,11 @@ export default function LoginScreen({ navigation }: Props) {
   const authContext = useContext(AuthContext);
   const userToken = authContext?.userToken;
   const login = authContext?.login;
+
   const navigate = useNavigation();
+ 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}> 
       <Text style={styles.headerText}>Welcome{'\n'}Back!</Text>
 
       <View
@@ -91,6 +94,7 @@ export default function LoginScreen({ navigation }: Props) {
         style={styles.button}
         onPress={() => {
           login && login(email, password);
+          
         }}
       >
         <Text
@@ -130,7 +134,7 @@ export default function LoginScreen({ navigation }: Props) {
         </View>
       </View>
           
-    </View>
+    </ScrollView>
   );
 }
 
