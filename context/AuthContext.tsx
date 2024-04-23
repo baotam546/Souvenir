@@ -8,6 +8,7 @@ interface AuthContextType {
   logout: () => void;
   userToken: string;
   isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
@@ -19,29 +20,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState("");
 
-  // const login = async (username: string, password: string) => {
-  //   try {
-  //     // setIsLoading(true);
-  //     const res = await loginApi.login(username, password);
-  //     console.log("login res", res);
-  //     if (res.status == 200) {
-  //       const token = res.data.accessToken;
-  //       AsyncStorage.setItem("userToken", token);
-  //     }
-
-  //   } catch (error) {
-  //     console.log("login error", error);
-  //   }
-  // };
-
   const login = async (username: string, password: string) => {
     try {
       // setIsLoading(true);
-      console.log('login')
-      const res = await axios.post("https://59e3-171-239-141-239.ngrok-free.app/api/auth/login", { username, password });
+      const res = await loginApi.login(username, password);
       console.log("login res", res);
       if (res.status == 200) {
-        const token = res.data.accessToken;
+        console.log("response data", res.data);
+        const token = res.data.data.accessToken;
+        console.log("token", token);
+        setUserToken(token)
         AsyncStorage.setItem("userToken", token);
       }
 
@@ -50,15 +38,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // const login = async (username: string, password: string) => {
+  //   try {
+  //     setIsLoading(true);
+  //     const res = await axios.post("https://59e3-171-239-141-239.ngrok-free.app/api/auth/login", { username, password });
+  //     if (res.status == 200) {
+  //       const token = res.data.accessToken;
+  //       AsyncStorage.setItem("userToken", token);
+  //       setUserToken(token);
+  //       setIsLoading(false)
+  //     }
+
+  //   } catch (error) {
+  //     console.log("login error", error);
+  //   }
+  // };
+
  
   
  
 
-  const logout = () => {
+  const logout = async() => {
+    try {
     setIsLoading(true);
     setUserToken("");
-    AsyncStorage.removeItem("userToken");
+    await AsyncStorage.removeItem("userToken");
     setIsLoading(false);
+  } catch (error) {
+    console.log("logout error", error);
+  }
+    
   };
 
   const isLoggedIn = async () => {
@@ -77,6 +86,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     userToken,
     isLoading,
+    setIsLoading
   };
 
   useEffect(() => {

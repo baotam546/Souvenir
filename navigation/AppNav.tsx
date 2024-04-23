@@ -9,6 +9,7 @@ const AppNav = () => {
     const authContext = useContext(AuthContext);
   const isLoading = authContext?.isLoading;
   const userToken = authContext?.userToken;
+  console.log("userToken", userToken);
   // if (isLoading) {
   //   return (
   //       <View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
@@ -19,7 +20,7 @@ const AppNav = () => {
   return (
     <NavigationContainer>
     {userToken ? <TabNavigator /> : <AuthNavigator />}
-    {/* <TabNavigator/> */}
+    {/* <AuthNavigator/> */}
   </NavigationContainer>
   )
 }

@@ -18,8 +18,8 @@ const ProductListScreen = () => {
         </Text>
       </View>
       <View>
-        <ProductCard />
-        <ProductCard />
+        {/* <ProductCard />
+        <ProductCard /> */}
       </View>
     </View>
   );

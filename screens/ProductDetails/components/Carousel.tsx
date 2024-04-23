@@ -1,35 +1,32 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, Image } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
-import React from 'react'
-import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+
 const width = Dimensions.get('window').width;
-const DetailsCarousel = () => {
+
+interface imageProps {
+  image: string[];
+}
+
+const DetailsCarousel: React.FC<imageProps> = ({ image }) => {
   return (
     <View style={{ flex: 1 }}>
-    <Carousel
+      <Carousel
         width={width}
         height={width / 1.5}
-        data={[...new Array(6).keys()]}
+        data={image}
         scrollAnimationDuration={1000}
         onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({ index }) => (
-            <View
-                style={{
-                    flex: 1,
-                    borderWidth: 1,
-                    justifyContent: 'center',
-                }}
-            >
-                <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                    {index}
-                </Text>
-            </View>
+          <View>
+            <Image source={{ uri: image[index] }} style={{ width: '100%', height: '100%' }} />
+          </View>
         )}
-    />
-</View>
-  )
-}
+      />
+    </View>
+  );
+};
 
-export default DetailsCarousel
+export default DetailsCarousel;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
