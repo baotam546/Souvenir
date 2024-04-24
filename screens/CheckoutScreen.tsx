@@ -5,6 +5,7 @@ import {
   FlatList,
   Pressable,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -14,6 +15,8 @@ import AddressModal from "../components/AddressModal";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
+
+import { Image } from "react-native";
 
 const data = [
   {
@@ -36,8 +39,9 @@ const data = [
     name: "Product 1",
   },
 ];
-
+const { width, height} = Dimensions.get("window");
 const CheckoutScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const items = useSelector((state: any) => state.cart.data);
   const [cartItem, setCartItem] = useState(items);
   const { navigate } = useNavigation();
@@ -74,6 +78,68 @@ const CheckoutScreen = () => {
             )}
           />
         </View>
+
+    <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Ionicons name="location-outline" size={20} />
+        <Text style={styles.titleText}>Delivery Address</Text>
+      </View>
+
+      <View style={styles.addressContainer}>
+        <TouchableOpacity
+          onPress={() => setModalVisible(!modalVisible)}
+          style={styles.addressLeft}
+        >
+          <Text style={styles.addressTitle}>Address: </Text>
+          <Text>216 St Paul's Rd, London N1 2LL, Uk </Text>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>Contact:</Text> +46 123455
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            if (cartItem.length > 0) {
+              navigate("shopping-screen");
+            }
+          }}
+          style={styles.addressRight}
+          disabled={cartItem.length === 0}
+        >
+          <MaterialIcons name="paid" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.shoppingListContainer}>
+        <Text style={styles.shoppingText}>Shopping Cart List</Text>
+        {cartItem.length === 0 ? (
+          <View style={{
+            alignSelf:'center', 
+            display: 'flex', 
+            flexDirection: 'column',
+             justifyContent: 'center', 
+             alignItems: 'center', 
+             height: height/2.5 }}>
+            <Text style={{fontSize: 20}}>Empty</Text>
+            <View >
+            <MaterialIcons name="remove-shopping-cart" size={150} color="black" />
+            </View>
+            
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={cartItem}
+              renderItem={({ item }) => (
+                <ProductCardCheckOut
+                  item={item}
+                  isSelect={selectedCards.includes(item.id)}
+                  onPress={() => handleCardPress(item.id)}
+                />
+              )}
+            />
+          </View>
+        )}
       </View>
 
       <View style={{ flex: 1, justifyContent: "center" }}>
