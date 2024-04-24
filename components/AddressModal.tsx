@@ -7,37 +7,43 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import AddressChooseCard from "./AddressChooseCard";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AddressModalProps {
   visible: boolean;
   setModalVisible: (visible: boolean) => void;
+  setAddressItem: (item:addressItem) => void;
 }
+type addressItem = {
+  address: string;
+  phone: string;
+};
 
-const dataPhoneAddress = [
-  {
-    id: 1,
-    address: "216 St Paul's Rd, London N1 2LL, Uk",
-    phone: "090287732",
-  },
-  {
-    id: 2,
-    address: "2188 St Paul's Rd, London N2 2KK, UK",
-    phone: "090287732",
-  },
-  {
-    id: 3,
-    address: "2188 St Paul's Rd, London N2 2KK, UK",
-    phone: "090287732",
-  },
-];
 
 const AddressModal: React.FC<AddressModalProps> = ({
   visible,
   setModalVisible,
+  setAddressItem,
 }) => {
+  const navigate = useNavigation();
+  const addressList = useSelector((state: any) => state.address);
+  const [address, setAddress] = useState(addressList.data);
+  const isFocus = useIsFocused();
+  useEffect(() => {
+    setAddress(addressList.data);
+  }, [isFocus]);
+  const defaultAddress = async(item: any)=>{
+    await AsyncStorage.setItem("address", JSON.stringify({
+      address: item.address,
+      phone: item.phone,
+    }));
+    setAddressItem(item);
+  }
   return (
     <Modal
       animationOutTiming={400}
@@ -46,27 +52,41 @@ const AddressModal: React.FC<AddressModalProps> = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+          <Text style={{ fontSize: 26, fontWeight: "bold" }}>
             Choose your address
           </Text>
+          {address.length === 0 ? (
+            <Text style={{ fontSize: 12, fontWeight: "500" }}>
+              No address found
+            </Text>
+          ) : (
+            <View style={{ width: "100%", flex: 1 }}>
+              <FlatList
+                data={address}
+                renderItem={({ item }) => (
+                  <AddressChooseCard
+                    key={item.id}
+                    address={item.address}
+                    phone={item.phone}
+                    onAddressSelected={(address) => {
+                      console.log(address);
+                      setModalVisible(!visible);
+                    }}
+                    onPress={() => defaultAddress(item)}
+                  />
+                )}
+              />
+            </View>
+          )}
 
-          <View style={{ width: "100%", flex: 1 }}>
-            <FlatList
-              data={dataPhoneAddress}
-              renderItem={({ item }) => (
-                <AddressChooseCard
-                  key={item.id}
-                  address={item.address}
-                  phone={item.phone}
-                  onAddressSelected={(address) => {
-                    console.log(address);
-                    setModalVisible(!visible);
-                  }}
-                />
-              )}
-            />
+          <View style={{ width: "100%", rowGap: 5, marginTop: 30 }}>
+            <TouchableOpacity
+              onPress={() => navigate.navigate("Create Address")}
+              style={styles.buttonConfirm}
+            >
+              <Text style={styles.buttonText}>Add address</Text>
+            </TouchableOpacity>
           </View>
-
           <View style={{ width: "100%", rowGap: 5, marginTop: 30 }}>
             <TouchableOpacity
               onPress={() => setModalVisible(!visible)}
@@ -114,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    backgroundColor: "#BEDB39",
+    backgroundColor: "#34e920",
     paddingVertical: 10,
     borderRadius: 5,
   },

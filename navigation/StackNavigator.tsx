@@ -16,6 +16,7 @@ import ProductDetailsScreen from "../screens/ProductDetails/ProductDetailsScreen
 import HeaderDetails from "../screens/ProductDetails/components/HeaderDetails";
 import Paypal from "../screens/Paypal";
 import SuccessScreen from "../screens/SuccessScreen";
+import CreateAddress from "../screens/CreateAddress";
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,7 @@ const CheckOutStackNavigator = () => {
         initialParams={{ paypalUrl: "https://your-paypal-url.com" }}
       />
       <Stack.Screen name="successScreen" component={SuccessScreen} />
+      <Stack.Screen name="Create Address" component={CreateAddress} />
     </Stack.Navigator>
   );
 };

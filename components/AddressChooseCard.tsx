@@ -7,18 +7,21 @@ interface AddressChooseCardProp {
   address: string;
   phone: string;
   onAddressSelected: (address: string, phone: string) => void;
+  onPress: () => void;
 }
 
 const AddressChooseCard: React.FC<AddressChooseCardProp> = ({
   onAddressSelected,
   address,
   phone,
+  onPress
 }) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handlePress = () => {
     setIsSelected(!isSelected);
     onAddressSelected(address, phone);
+    onPress()
   };
 
   return (

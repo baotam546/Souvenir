@@ -10,12 +10,17 @@ import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCardCheckOut from "../components/ProductCardCheckOut";
 import AddressModal from "../components/AddressModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addAddress } from "../redux/slices/AddressSlice";
 
 const productImg = require("../assets/teddy.jpg");
-
+type addressItem = {
+  address: string;
+  phone: string;
+};
 const ShoppingBagScreen = () => {
   const { navigate } = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,7 +28,17 @@ const ShoppingBagScreen = () => {
   const [cartItem, setCartItem] = useState(items);
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const address = useSelector((state: any) => state.address.data);
+  const [showAddressNotification, setShowAddressNotification] = useState(false);
+  const [addressItem, setAddressItem] = useState<addressItem>();
+  const dispatch= useDispatch();
+  const proceedToPayment = () => {
+    if (address.length >= 1) {
+      navigate("paycheck-screen");
+    } else {
+      setShowAddressNotification(true);
+    }
+  };
   const handleCardPress = (cardId: number) => {
     setSelectedCards((prevSelectedCards: any) => {
       if (prevSelectedCards.includes(cardId)) {
@@ -35,14 +50,16 @@ const ShoppingBagScreen = () => {
   };
 
   useEffect(() => {
-    const total = cartItem.reduce(
-      (sum: number, item: { price: string; quantity: number }) =>
-        sum + parseFloat(item.price) * item.quantity,
-      0
-    );
-    setTotalPrice(total);
-    setCartItem(items);
-  }, [items]);
+    getSelectedAddress();
+  }, []);
+  const getSelectedAddress = async () => {
+    const address = await AsyncStorage.getItem("address");
+    if(address){
+      setAddressItem( JSON.parse(address) );
+    dispatch(addAddress(JSON.parse(address)));
+    }
+    
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -61,17 +78,25 @@ const ShoppingBagScreen = () => {
             backgroundColor: Colors.greyBackGround,
           }}
         >
-          <View style={{ flexDirection: "row", columnGap: 10 }}>
-            <Ionicons name="location-outline" size={20} />
-            <Text style={{ fontWeight: "bold" }}>
-              216 St Paul's Rd, London N1 2LL, Uk
-            </Text>
-          </View>
+          {addressItem ? (
+            <>
+              <View style={{ flexDirection: "row", columnGap: 10 }}>
+                <Ionicons name="location-outline" size={20} />
+                <Text style={{ fontWeight: "bold" }}>
+                  {addressItem.address}
+                </Text>
+              </View>
 
-          <View style={{ flexDirection: "row", columnGap: 10 }}>
-            <Ionicons name="call-outline" size={20} />
-            <Text style={{ fontWeight: "bold" }}>0123456789</Text>
-          </View>
+              <View style={{ flexDirection: "row", columnGap: 10 }}>
+                <Ionicons name="call-outline" size={20} />
+                <Text style={{ fontWeight: "bold" }}>{addressItem.phone}</Text>
+              </View>
+            </>
+          ) : (
+            <View >
+              <Text style={styles.title}>Choose Address</Text>
+            </View>
+          )}
 
           <Ionicons
             name="chevron-forward"
@@ -122,7 +147,7 @@ const ShoppingBagScreen = () => {
             <TouchableOpacity
               style={styles.processBtn}
               onPress={() => {
-                navigate("paycheck-screen");
+                proceedToPayment();
               }}
             >
               <Text style={{ fontWeight: "600", fontSize: 15, color: "white" }}>
@@ -136,6 +161,7 @@ const ShoppingBagScreen = () => {
       <AddressModal
         visible={modalVisible}
         setModalVisible={() => setModalVisible(!modalVisible)}
+        setAddressItem={setAddressItem}
       ></AddressModal>
     </View>
   );
