@@ -11,19 +11,19 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import AddressChooseCard from "./AddressChooseCard";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addAddress } from "../redux/slices/AddressSlice";
 
 interface AddressModalProps {
   visible: boolean;
   setModalVisible: (visible: boolean) => void;
-  setAddressItem: (item:addressItem) => void;
+  setAddressItem: (item: addressItem) => void;
 }
 type addressItem = {
   address: string;
   phone: string;
 };
-
 
 const AddressModal: React.FC<AddressModalProps> = ({
   visible,
@@ -34,16 +34,31 @@ const AddressModal: React.FC<AddressModalProps> = ({
   const addressList = useSelector((state: any) => state.address);
   const [address, setAddress] = useState(addressList.data);
   const isFocus = useIsFocused();
+  const dispatch = useDispatch();
   useEffect(() => {
     setAddress(addressList.data);
   }, [isFocus]);
-  const defaultAddress = async(item: any)=>{
-    await AsyncStorage.setItem("address", JSON.stringify({
-      address: item.address,
-      phone: item.phone,
-    }));
+
+  useEffect(() => {
+    getSelectedAddress();
+  }, []);
+  const defaultAddress = async (item: any) => {
+    await AsyncStorage.setItem(
+      "address",
+      JSON.stringify({
+        address: item.address,
+        phone: item.phone,
+      })
+    );
     setAddressItem(item);
-  }
+  };
+  const getSelectedAddress = async () => {
+    const address = await AsyncStorage.getItem("address");
+    if (addressList  && address) {
+      dispatch(addAddress(JSON.parse(address)));
+    } else return null;
+  };
+
   return (
     <Modal
       animationOutTiming={400}

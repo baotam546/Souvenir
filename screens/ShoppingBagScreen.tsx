@@ -54,11 +54,9 @@ const ShoppingBagScreen = () => {
   }, []);
   const getSelectedAddress = async () => {
     const address = await AsyncStorage.getItem("address");
-    if(address){
+    if(address && addressItem == null){
       setAddressItem( JSON.parse(address) );
-    dispatch(addAddress(JSON.parse(address)));
     }
-    
   }
 
   return (
