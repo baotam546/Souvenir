@@ -37,7 +37,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 // change this URL to your local server using ngrok or deploy your server to the cloud
-const baseURL = " https://presumably-social-liger.ngrok-free.app/api";
+const baseURL = "http://10.94.115.3/api";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);

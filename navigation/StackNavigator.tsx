@@ -17,6 +17,7 @@ import HeaderDetails from "../screens/ProductDetails/components/HeaderDetails";
 import Paypal from "../screens/Paypal";
 import SuccessScreen from "../screens/SuccessScreen";
 import CreateAddress from "../screens/CreateAddress";
+import ViewOrderHistory from "../screens/OrderHistory/viewOrderHistory";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +44,14 @@ const HomeStackNavigator = () => {
         name="productDetails-screen"
         component={ProductDetailsScreen}
       />
+      <Stack.Screen
+      options={{
+        header: () => <HeaderDetails />,
+      }}
+      name="view-order-history" component={ViewOrderHistory} />
     </Stack.Navigator>
+    
+    
   );
 };
 
@@ -88,5 +96,7 @@ const CheckOutStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+
 
 export { CheckOutStackNavigator, SearchStackNavigator, HomeStackNavigator };

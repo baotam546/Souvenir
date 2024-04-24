@@ -15,6 +15,8 @@ const Header = () => {
   const authContext = useContext(AuthContext);
   const logout = authContext?.logout;
 
+
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
@@ -25,7 +27,7 @@ const Header = () => {
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
           <Cart/>
-          <TouchableOpacity onPress={()=>{logout && logout()}}>
+          <TouchableOpacity onPress={()=>{navigation.navigate('view-order-history');}}>
             <Avatar
               size={32}
               rounded
