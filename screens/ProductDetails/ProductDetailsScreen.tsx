@@ -150,12 +150,6 @@ const ProductDetailsScreen = () => {
             Add to cart
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buyNowButton}>
-          <Ionicons name='cash' size={20} color="white"/>
-          <Text style={styles.buttonText}>
-            Buy now
-          </Text>
-        </TouchableOpacity>
       </View>
       
     </ScrollView>
@@ -193,12 +187,14 @@ const styles = StyleSheet.create(
     buttonContainer:{
       display:"flex",
       flexDirection:"row",
+      alignSelf:"flex-end",
       paddingHorizontal:10,
       gap:5,
       marginTop:10,
       width:width,
     },
     cartButton:{
+    
       width:'auto',
       display:"flex",
       flexDirection:"row",

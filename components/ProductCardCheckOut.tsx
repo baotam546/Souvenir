@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import {
   addItemstoCart,
+  increaseItemFromCart,
   reduceItemFromCart,
   removeItemFromCart,
 } from "../redux/slices/CartSlice";
@@ -40,7 +41,7 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   const dispatch = useDispatch();
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1);
-    dispatch(addItemstoCart(item));
+    dispatch(increaseItemFromCart(item));
   };
 
   const handleDecreaseQuantity = () => {
@@ -92,7 +93,11 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
           </View>
         </View>
 
-        <TouchableOpacity style={{ marginTop: 5, marginLeft: 10 }}>
+        <TouchableOpacity 
+        onPress={()=>{
+          dispatch(removeItemFromCart(item));
+        }}
+        style={{ marginTop: 5, marginLeft: 10 }}>
           <Ionicons name="trash-bin-outline" size={24} color="red" />
         </TouchableOpacity>
       </View>

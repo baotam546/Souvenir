@@ -84,7 +84,6 @@ const CheckOutStackNavigator = () => {
         initialParams={{ paypalUrl: "https://your-paypal-url.com" }}
       />
       <Stack.Screen name="successScreen" component={SuccessScreen} />
-      <Stack.Screen name="paycheck-screen" component={PaycheckScreen} />
       <Stack.Screen name="Create Address" component={CreateAddress} />
     </Stack.Navigator>
   );

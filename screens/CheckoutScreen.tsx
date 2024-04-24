@@ -1,45 +1,18 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
-  Pressable,
   TouchableOpacity,
   Dimensions,
+  FlatList,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ProductCardCheckOut from "../components/ProductCardCheckOut";
 import { useNavigation } from "@react-navigation/native";
-import AddressModal from "../components/AddressModal";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Colors from "../constants/Colors";
-
-import { Image } from "react-native";
-
-const data = [
-  {
-    id: 1,
-    name: "Product 1",
-  },
-
-  {
-    id: 2,
-    name: "Product 1",
-  },
-
-  {
-    id: 3,
-    name: "Product 1",
-  },
-
-  {
-    id: 4,
-    name: "Product 1",
-  },
-];
-const { width, height} = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 const CheckoutScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const items = useSelector((state: any) => state.cart.data);
@@ -65,66 +38,26 @@ const CheckoutScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.shoppingListContainer}>
-        <Text style={styles.shoppingText}>Shopping Cart</Text>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={cartItem}
-            renderItem={({ item }) => (
-              <ProductCardCheckOut
-                item={item}
-                isSelect={selectedCards.includes(item.id)}
-                onPress={() => handleCardPress(item.id)}
-              />
-            )}
-          />
-        </View>
-
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Ionicons name="location-outline" size={20} />
-        <Text style={styles.titleText}>Delivery Address</Text>
-      </View>
-
-      <View style={styles.addressContainer}>
-        <TouchableOpacity
-          onPress={() => setModalVisible(!modalVisible)}
-          style={styles.addressLeft}
-        >
-          <Text style={styles.addressTitle}>Address: </Text>
-          <Text>216 St Paul's Rd, London N1 2LL, Uk </Text>
-          <Text>
-            <Text style={{ fontWeight: "bold" }}>Contact:</Text> +46 123455
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            if (cartItem.length > 0) {
-              navigate("shopping-screen");
-            }
-          }}
-          style={styles.addressRight}
-          disabled={cartItem.length === 0}
-        >
-          <MaterialIcons name="paid" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.shoppingListContainer}>
         <Text style={styles.shoppingText}>Shopping Cart List</Text>
         {cartItem.length === 0 ? (
-          <View style={{
-            alignSelf:'center', 
-            display: 'flex', 
-            flexDirection: 'column',
-             justifyContent: 'center', 
-             alignItems: 'center', 
-             height: height/2.5 }}>
-            <Text style={{fontSize: 20}}>Empty</Text>
-            <View >
-            <MaterialIcons name="remove-shopping-cart" size={150} color="black" />
+          <View
+            style={{
+              alignSelf: "center",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: height / 2.5,
+            }}
+          >
+            <Text style={{ fontSize: 20 }}>Empty</Text>
+            <View>
+              <MaterialIcons
+                name="remove-shopping-cart"
+                size={150}
+                color="black"
+              />
             </View>
-            
           </View>
         ) : (
           <View style={{ flex: 1 }}>
@@ -145,16 +78,19 @@ const CheckoutScreen = () => {
       <View style={{ flex: 1, justifyContent: "center" }}>
         <TouchableOpacity
           onPress={() => {
-            navigate("shopping-screen");
+            if (cartItem.length > 0) {
+              navigate("shopping-screen");
+            }
           }}
-          style={{
-            width: "100%",
-            backgroundColor: "green",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 5,
-          }}
+          style={[
+            styles.checkoutButton,
+            {
+              opacity: cartItem.length === 0 ? 0.5 : 1,
+              backgroundColor: cartItem.length === 0 ? "#ccc" : "green",
+              borderColor: cartItem.length === 0 ? "#ccc" : "#CACACA",
+            },
+          ]}
+          disabled={cartItem.length === 0}
         >
           <View
             style={{
@@ -180,6 +116,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 5,
+    marginBottom: 10,
+  },
   titleText: {
     fontSize: 16,
     fontWeight: "600",
@@ -229,6 +171,14 @@ const styles = StyleSheet.create({
   shoppingListContainer: {
     flex: 10,
     width: "100%",
+  },
+  checkoutButton: {
+    width: "100%",
+    backgroundColor: "green",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
   },
 });
 
