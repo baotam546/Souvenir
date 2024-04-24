@@ -79,68 +79,88 @@ const ProductDetailsScreen = () => {
   }
   const dispatch = useDispatch();
   return (
-    <ScrollView>
-      <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 7 }}>
         <View style={styles.container}>
           <DetailsCarousel image={product.productImage} />
         </View>
-        <View style={styles.detailsContainer}>
-          <Text style={{ fontSize: 26, fontWeight: "700", color: "red" }}>
-            {formatPriceInVND(product?.price || 0)}
-          </Text>
-          <Text style={{ fontSize: 24, fontWeight: "500" }}>
-            {product?.name || ""}
-          </Text>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+          <View style={styles.detailsContainer}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={{ fontSize: 26, fontWeight: "700", color: "red" }}>
+                {formatPriceInVND(product?.price || 0)}
+              </Text>
+              <View style={styles.priceBox}>
+                <TouchableOpacity
+                  onPress={handleDecreaseQuantity}
+                  style={{ width: 30, alignItems: "center" }}
+                >
+                  <AntDesign name="minus" size={16} />
+                </TouchableOpacity>
+                <TextInput
+                  value={quantity.toString()}
+                  keyboardType={"numeric"}
+                  style={{
+                    borderWidth: 1,
+                    textAlign: "center",
+                    width: 50,
+                    height: 40,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={handleIncreaseQuantity}
+                  style={{ width: 30, alignItems: "center" }}
+                >
+                  <AntDesign name="plus" size={16} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={{ fontSize: 24, fontWeight: "500" }}>
+              {product?.name || ""}
+            </Text>
 
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
             <View style={styles.starContainer}>
               <StarRatingDisplay starSize={20} rating={4.5} />
-              <Text>(255 reviews)</Text>
+              <Text style={{ fontSize: 16, fontWeight: "500" }}>
+                (255 reviews)
+              </Text>
             </View>
-            <View>
-              <Text style={{ fontSize: 17, fontWeight: "400" }}>Toys</Text>
+            <View style={{ marginTop: 20 }}>
+              <Text style={{ fontSize: 24, fontWeight: "500" }}>
+                Description
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "400",
+                  color: "#ababab",
+                  marginBottom: 20,
+                }}
+              >
+                {product?.description || ""}
+              </Text>
             </View>
           </View>
+        </View>
+      </View>
 
-          <Text style={{ fontSize: 20, fontWeight: "500" }}>Description</Text>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "400",
-              color: "#ababab",
-              marginBottom: 20,
-            }}
-          >
-            {product?.description || ""}
-          </Text>
-        </View>
-        {/*<View style={styles.priceBox}>
-          <TouchableOpacity
-            onPress={handleDecreaseQuantity}
-            style={{ width: 30, alignItems: "center" }}
-          >
-            <AntDesign name="minus" size={16} />
-          </TouchableOpacity>
-          <TextInput
-            value={quantity.toString()}
-            keyboardType={"numeric"}
-            style={{
-              borderWidth: 1,
-              textAlign: "center",
-              width: 50,
-              height: 40,
-            }}
-          />
-          <TouchableOpacity
-            onPress={handleIncreaseQuantity}
-            style={{ width: 30, alignItems: "center" }}
-          >
-            <AntDesign name="plus" size={16} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonContainer}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: 10,
+          borderTopWidth: 1,
+          borderColor: "#CACACA",
+        }}
+      >
+        <View
+          style={{ flexDirection: "row", columnGap: 20, paddingHorizontal: 30 }}
+        >
           <TouchableOpacity
             style={styles.cartButton}
             onPress={() => {
@@ -155,16 +175,12 @@ const ProductDetailsScreen = () => {
               );
             }}
           >
-            <Ionicons name="cart" size={20} color="white" />
+            <Ionicons name="cart" size={20} color="red" />
             <Text style={styles.buttonText}>Add to cart</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buyNowButton}>
-            <Ionicons name="cash" size={20} color="white" />
-            <Text style={styles.buttonText}>Buy now</Text>
-          </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -193,45 +209,26 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 10,
   },
-  buttonContainer: {
-    flex: 5,
-    backgroundColor: "red",
-    display: "flex",
-    flexDirection: "row",
-    paddingHorizontal: 10,
-    gap: 5,
-    marginTop: 10,
-    width: width,
-  },
   cartButton: {
-    width: "auto",
-    display: "flex",
+    paddingHorizontal: 10,
+    columnGap: 10,
+    height: 60,
+    borderWidth: 1,
+    borderColor: "red",
     flexDirection: "row",
-    gap: 5,
-    alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f45656",
-    padding: 10,
-    borderRadius: 10,
-  },
-  buyNowButton: {
-    width: "auto",
-    display: "flex",
-    flexDirection: "row",
-    gap: 5,
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#278af4",
-    padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
+    width: "100%",
   },
+
   buttonText: {
-    fontSize: 20,
-    color: "white",
+    color: "red",
+    fontSize: 16,
     fontWeight: "bold",
   },
   priceBox: {
-    width: "auto",
+    width: 150,
     borderWidth: 1,
     borderColor: "#CACACA",
     alignItems: "center",

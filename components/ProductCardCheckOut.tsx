@@ -67,39 +67,7 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
             <Text>4.8 </Text>
             <Ionicons name="star" color={"orange"} />
           </View>
-          <View style={styles.priceBox}>
-            <TouchableOpacity
-              onPress={handleDecreaseQuantity}
-              style={{ width: 30, alignItems: "center" }}
-            >
-              <AntDesign name="minus" size={16} />
-            </TouchableOpacity>
-            <TextInput
-              value={quantity.toString()}
-              keyboardType={"numeric"}
-              style={{
-                borderWidth: 1,
-                textAlign: "center",
-                width: 50,
-                height: 40,
-              }}
-            />
-            <TouchableOpacity
-              onPress={handleIncreaseQuantity}
-              style={{ width: 30, alignItems: "center" }}
-            >
-              <AntDesign name="plus" size={16} />
-            </TouchableOpacity>
-          </View>
         </View>
-
-        <TouchableOpacity 
-        onPress={()=>{
-          dispatch(removeItemFromCart(item));
-        }}
-        style={{ marginTop: 5, marginLeft: 10 }}>
-          <Ionicons name="trash-bin-outline" size={24} color="red" />
-        </TouchableOpacity>
       </View>
 
       <View
