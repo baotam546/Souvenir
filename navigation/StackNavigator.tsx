@@ -14,6 +14,7 @@ import HeaderWithBackButton from "../components/HeaderWithBackButton";
 import Header from "../components/Header";
 import ProductDetailsScreen from "../screens/ProductDetails/ProductDetailsScreen";
 import HeaderDetails from "../screens/ProductDetails/components/HeaderDetails";
+import CreateAddress from "../screens/CreateAddress";
 
 const Stack = createNativeStackNavigator();
 const HomeStackNavigator = () => {
@@ -61,6 +62,7 @@ const CheckOutStackNavigator = () => {
       <Stack.Screen name="checkout-screen" component={CheckoutScreen} />
       <Stack.Screen name="shopping-screen" component={ShoppingBagScreen} />
       <Stack.Screen name="paycheck-screen" component={PaycheckScreen} />
+      <Stack.Screen name="Create Address" component={CreateAddress} />
     </Stack.Navigator>
   );
 };
