@@ -143,7 +143,7 @@ const HomeScreen = () => {
           <FlatList
             horizontal
             data={productList}
-            renderItem={({ item }) => <ProductCard item={item} />}
+            renderItem={({ item }) => <ProductCard item={item} key={item.id} />}
             keyExtractor={(item: any) => item.id}
             contentContainerStyle={{
               justifyContent: "center",

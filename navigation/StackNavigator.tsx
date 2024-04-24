@@ -15,8 +15,10 @@ import Header from "../components/Header";
 import ProductDetailsScreen from "../screens/ProductDetails/ProductDetailsScreen";
 import HeaderDetails from "../screens/ProductDetails/components/HeaderDetails";
 import Paypal from "../screens/Paypal";
+import SuccessScreen from "../screens/SuccessScreen";
 
 const Stack = createNativeStackNavigator();
+
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator
@@ -58,10 +60,29 @@ const SearchStackNavigator = () => {
 
 const CheckOutStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="shopping-screen">
-      <Stack.Screen name="checkout-screen" component={CheckoutScreen} />
+    <Stack.Navigator initialRouteName="checkout-screen">
+      <Stack.Screen
+        name="checkout-screen"
+        component={CheckoutScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="shopping-screen" component={ShoppingBagScreen} />
-      <Stack.Screen name="paycheck-screen" component={PaycheckScreen} />
+      <Stack.Screen
+        name="paycheck-screen"
+        component={PaycheckScreen}
+        options={{
+          headerTitle: "Paycheck",
+        }}
+      />
+      <Stack.Screen
+        name="paypal-webview"
+        options={{
+          headerTitle: "Paypal payment",
+        }}
+        component={Paypal}
+        initialParams={{ paypalUrl: "https://your-paypal-url.com" }}
+      />
+      <Stack.Screen name="successScreen" component={SuccessScreen} />
     </Stack.Navigator>
   );
 };
