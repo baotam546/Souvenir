@@ -1,140 +1,150 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import ProductCardCheckOut from "../components/ProductCardCheckOut";
+import AddressModal from "../components/AddressModal";
 
 const productImg = require("../assets/teddy.jpg");
 
 const ShoppingBagScreen = () => {
   const { navigate } = useNavigation();
-  const item = useSelector((state:any) => state.cart);
-  const [cartItems, setCartItems] = React.useState(item.data);
+  const [modalVisible, setModalVisible] = useState(false);
+  const items = useSelector((state: any) => state.cart.data);
+  const [cartItem, setCartItem] = useState(items);
+  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const handleCardPress = (cardId: number) => {
+    setSelectedCards((prevSelectedCards: any) => {
+      if (prevSelectedCards.includes(cardId)) {
+        return prevSelectedCards.filter((id: any) => id !== cardId);
+      } else {
+        return [...prevSelectedCards, cardId];
+      }
+    });
+  };
+
+  useEffect(() => {
+    const total = cartItem.reduce(
+      (sum: number, item: { price: string; quantity: number }) =>
+        sum + parseFloat(item.price) * item.quantity,
+      0
+    );
+    setTotalPrice(total);
+    setCartItem(items);
+  }, [items]);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
-        <View
+        <TouchableOpacity
+          onPress={() => setModalVisible(!modalVisible)}
           style={{
-            flexDirection: "row",
-            columnGap: 20,
-            alignItems: "flex-start",
+            flex: 1,
+            justifyContent: "center",
+            paddingHorizontal: 10,
+            rowGap: 10,
+            marginBottom: 10,
+            position: "relative",
+            borderBottomWidth: 1,
+            borderStyle: "dashed",
+            backgroundColor: Colors.greyBackGround,
           }}
         >
-          <View style={{ width: "35%", height: 170 }}>
-            <Image
-              source={productImg}
-              style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "cover",
-                borderRadius: 5,
-              }}
-            />
+          <View style={{ flexDirection: "row", columnGap: 10 }}>
+            <Ionicons name="location-outline" size={20} />
+            <Text style={{ fontWeight: "bold" }}>
+              216 St Paul's Rd, London N1 2LL, Uk
+            </Text>
           </View>
-          <View style={{ width: "60%", marginTop: 20 }}>
-            <View style={styles.info}>
-              <Text style={styles.productName}>Women's Casual Wear</Text>
-              <Text style={styles.variation}>
-                Checked Single-Breasted Blazer
-              </Text>
 
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text>Delivery by: </Text>
-                <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-                  10 May 2024
-                </Text>
-              </View>
-            </View>
+          <View style={{ flexDirection: "row", columnGap: 10 }}>
+            <Ionicons name="call-outline" size={20} />
+            <Text style={{ fontWeight: "bold" }}>0123456789</Text>
           </View>
+
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            style={{ position: "absolute", right: 10 }}
+          />
+        </TouchableOpacity>
+
+        <View style={{ flex: 5 }}>
+          <FlatList
+            data={cartItem}
+            renderItem={({ item }) => (
+              <ProductCardCheckOut
+                item={item}
+                isSelect={selectedCards.includes(item.id)}
+                onPress={() => handleCardPress(item.id)}
+              />
+            )}
+          />
         </View>
-
-        <View style={styles.divider}></View>
-        <View>
-          <Text style={styles.title}>Order Payment Details</Text>
-
-          <View style={{ rowGap: 10, marginTop: 30 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 18 }}>Order Amount</Text>
-              <Text style={{ fontWeight: "600", fontSize: 15 }}>
-                $7,000.000
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 18 }}>Delivery Fee</Text>
-              <Text style={{ fontWeight: "600", fontSize: 15, color: "red" }}>
-                Free
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.divider}></View>
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flex: 1,
+            backgroundColor: Colors.greyBackGround,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+
+            paddingHorizontal: 20,
+            borderColor: "#CACACA",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>Order Total</Text>
-          <Text style={{ fontWeight: "600", fontSize: 15 }}>$7,000.000</Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: Colors.greyBackGround,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-
-          paddingHorizontal: 20,
-          borderColor: "#CACACA",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{ flexDirection: "row", alignItems: "center", columnGap: 20 }}
-        >
-          <View style={{ width: "30%" }}>
-            <Text> Total:</Text>
-            <Text style={{ fontWeight: "600", fontSize: 18 }}>$ 7,000.000</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.processBtn}
-            onPress={() => {
-              navigate("paycheck-screen");
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              columnGap: 20,
             }}
           >
-            <Text style={{ fontWeight: "600", fontSize: 15, color: "white" }}>
-              Proceed to Payment
-            </Text>
-          </TouchableOpacity>
+            <View style={{ width: "30%" }}>
+              <Text> Total:</Text>
+              <Text style={{ fontWeight: "600", fontSize: 18 }}>
+                $ {totalPrice.toFixed(2)}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.processBtn}
+              onPress={() => {
+                navigate("paycheck-screen");
+              }}
+            >
+              <Text style={{ fontWeight: "600", fontSize: 15, color: "white" }}>
+                Proceed to Payment
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
+
+      <AddressModal
+        visible={modalVisible}
+        setModalVisible={() => setModalVisible(!modalVisible)}
+      ></AddressModal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    flex: 5,
+    flex: 1,
+    backgroundColor: "#F5F5F5",
   },
   info: { rowGap: 10 },
   productName: {

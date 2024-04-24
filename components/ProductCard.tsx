@@ -21,7 +21,6 @@ interface ProductCardProps {
   };
 }
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
-  console.log("item", item);
   const navigation = useNavigation();
 
   return (

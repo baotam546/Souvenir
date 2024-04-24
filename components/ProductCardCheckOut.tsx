@@ -10,26 +10,30 @@ import React, { useState } from "react";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { addItemstoCart, reduceItemFromCart, removeItemFromCart } from "../redux/slices/CartSlice";
+import {
+  addItemstoCart,
+  reduceItemFromCart,
+  removeItemFromCart,
+} from "../redux/slices/CartSlice";
 
 const imageCard = require("../assets/teddy.jpg");
 
 interface ProductCardCheckOutProps {
   isSelect: boolean;
   onPress: () => void;
-  item:itemCart
+  item: itemCart;
 }
-type itemCart={
+type itemCart = {
   id: string;
   name: string;
   price: number;
   quantity: number;
   productImage: string;
-} 
+};
 const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   isSelect,
   onPress,
-  item
+  item,
 }) => {
   const { navigate } = useNavigation();
   const [quantity, setQuantity] = useState(item.quantity);
@@ -42,9 +46,9 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
-      dispatch(reduceItemFromCart(item))
-    }else{
-      dispatch(removeItemFromCart(item))
+      dispatch(reduceItemFromCart(item));
+    } else {
+      dispatch(removeItemFromCart(item));
     }
   };
 
@@ -52,7 +56,7 @@ const ProductCardCheckOut: React.FC<ProductCardCheckOutProps> = ({
     <View style={styles.cardContainer}>
       <View style={styles.cardTop}>
         <View style={{ width: 150, height: 150 }}>
-          <Image source={{uri: item.productImage}} style={styles.img} />
+          <Image source={{ uri: item.productImage }} style={styles.img} />
         </View>
 
         <View style={styles.info}>
@@ -109,9 +113,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: "100%",
     height: "auto",
-    borderWidth: 1,
-    borderColor: "#CACACA",
-    borderRadius: 10,
+    backgroundColor: "white",
+
     paddingVertical: 20,
     paddingHorizontal: 10,
     marginBottom: 20,

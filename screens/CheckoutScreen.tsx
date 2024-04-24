@@ -13,6 +13,9 @@ import ProductCardCheckOut from "../components/ProductCardCheckOut";
 import { useNavigation } from "@react-navigation/native";
 import AddressModal from "../components/AddressModal";
 import { useSelector } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Colors from "../constants/Colors";
+
 import { Image } from "react-native";
 
 const data = [
@@ -60,6 +63,22 @@ const CheckoutScreen = () => {
   }, [items]);
 
   return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.shoppingListContainer}>
+        <Text style={styles.shoppingText}>Shopping Cart</Text>
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={cartItem}
+            renderItem={({ item }) => (
+              <ProductCardCheckOut
+                item={item}
+                isSelect={selectedCards.includes(item.id)}
+                onPress={() => handleCardPress(item.id)}
+              />
+            )}
+          />
+        </View>
+
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Ionicons name="location-outline" size={20} />
@@ -123,11 +142,34 @@ const CheckoutScreen = () => {
         )}
       </View>
 
-      <AddressModal
-        visible={modalVisible}
-        setModalVisible={() => setModalVisible(!modalVisible)}
-      ></AddressModal>
-    </View>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigate("shopping-screen");
+          }}
+          style={{
+            width: "100%",
+            backgroundColor: "green",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 5,
+          }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+              columnGap: 5,
+            }}
+          >
+            <Text style={{ fontSize: 16, color: "white" }}>Checking out</Text>
+            <Ionicons name="arrow-forward" size={16} color={"white"} />
+          </View>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -135,14 +177,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
+    backgroundColor: "white",
   },
 
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 5,
-    marginBottom: 10,
-  },
   titleText: {
     fontSize: 16,
     fontWeight: "600",
@@ -190,7 +227,7 @@ const styles = StyleSheet.create({
   },
 
   shoppingListContainer: {
-    flex: 1,
+    flex: 10,
     width: "100%",
   },
 });

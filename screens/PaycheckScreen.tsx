@@ -1,11 +1,59 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
+import { paymentApi } from "../utils/api/payment";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+
+type Product = {
+  id: string;
+  name: string;
+  price: string;
+  quantity: number;
+};
 
 const PaycheckScreen = () => {
   const [isSelected, setIsSelected] = useState(false);
-  console.log(isSelected);
+  const items = useSelector((state: any) => state.cart.data);
+  const [cartItem, setCartItem] = useState<Product[]>(items);
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [paypalUrl, setPaypalUrl] = useState<string>("");
+  const [cartPayment, setCartPayment] = useState([]);
+
+  useEffect(() => {
+    // Transform items to fit the Product type and add any additional logic
+    const transformedItems = items.map((item: Product) => ({
+      productId: item.id,
+      name: item.name,
+      price: item.price.toString(),
+      quantity: item.quantity,
+    }));
+    setCartPayment(transformedItems);
+  }, [items]);
+
+  const createPayment = async (arr: any) => {
+    setLoading(true);
+
+    try {
+      const response = await paymentApi.createPayment(arr);
+      console.log("response: ", response.data);
+      if (response.data.status === 200) {
+        setPaypalUrl(response.data.data);
+        setLoading(false);
+
+        console.log("paypal url: ", paypalUrl);
+
+        // err1
+        if (paypalUrl !== "") {
+          navigation.navigate("paypal-webview", { paypalUrl: paypalUrl });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -64,18 +112,20 @@ const PaycheckScreen = () => {
               backgroundColor: Colors.greyBackGround,
             }}
           >
-            <Fontisto name="visa" size={24} />
+            <Fontisto name="paypal-p" size={24} />
             <Text>********2104</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
+            disabled={isSelected ? false : true}
+            onPress={() => createPayment(cartPayment)}
             style={{
               borderRadius: 5,
               alignItems: "center",
               justifyContent: "center",
               paddingVertical: 15,
               paddingHorizontal: 30,
-              backgroundColor: "#F83758",
+              backgroundColor: isSelected ? "#F83758" : "#CACACA",
               marginTop: 30,
             }}
           >
