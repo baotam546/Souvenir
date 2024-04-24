@@ -22,16 +22,6 @@ import { useRoute } from "@react-navigation/native";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
 import { AuthContext } from "../../context/AuthContext";
 
-const Category = [
-  { id: 1, name: "Teddy" },
-  { id: 2, name: "Car" },
-];
-
-const Product = [
-  { id: 1, name: "Teddy" },
-  { id: 2, name: "Car" },
-  { id: 3, name: "Book" },
-];
 type Product = {
   _id: string;
   name: string;
@@ -89,81 +79,90 @@ const ProductDetailsScreen = () => {
   }
   const dispatch = useDispatch();
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <DetailsCarousel image={product.productImage} />
-      </View>
-      <View style={styles.detailsContainer}>
-        <Text style={{ fontSize: 27, fontWeight: "bold" }}>
-          {product?.name || ""}
-        </Text>
-        <Text style={{ fontSize: 17, fontWeight: "400" }}>Toys</Text>
-        <View style={styles.starContainer}>
-          <StarRatingDisplay starSize={20} rating={4.5} />
-          <Text>(255 reviews)</Text>
+    <ScrollView>
+      <View style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <DetailsCarousel image={product.productImage} />
         </View>
+        <View style={styles.detailsContainer}>
+          <Text style={{ fontSize: 26, fontWeight: "700", color: "red" }}>
+            {formatPriceInVND(product?.price || 0)}
+          </Text>
+          <Text style={{ fontSize: 24, fontWeight: "500" }}>
+            {product?.name || ""}
+          </Text>
 
-        <Text style={{ fontSize: 22, fontWeight: "700" }}>
-          {formatPriceInVND(product?.price || 0)}
-        </Text>
-        <Text style={{ fontSize: 20, fontWeight: "500" }}>Description</Text>
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: "400",
-            color: "#abababf",
-            marginBottom: 20,
-          }}
-        >
-          {product?.description || ""}
-        </Text>
-      </View>
-      <View style={styles.priceBox}>
-        <TouchableOpacity
-          onPress={handleDecreaseQuantity}
-          style={{ width: 30, alignItems: "center" }}
-        >
-          <AntDesign name="minus" size={16} />
-        </TouchableOpacity>
-        <TextInput
-          value={quantity.toString()}
-          keyboardType={"numeric"}
-          style={{
-            borderWidth: 1,
-            textAlign: "center",
-            width: 50,
-            height: 40,
-          }}
-        />
-        <TouchableOpacity
-          onPress={handleIncreaseQuantity}
-          style={{ width: 30, alignItems: "center" }}
-        >
-          <AntDesign name="plus" size={16} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.cartButton}
-          onPress={() => {
-            dispatch(
-              addItemstoCart({
-                id: product._id,
-                name: product.name,
-                price: product.price,
-                quantity: quantity,
-                productImage: product.productImage[0],
-              })
-            );
-          }}
-        >
-          <Ionicons name="cart" size={20} color="white" />
-          <Text style={styles.buttonText}>Add to cart</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buyNowButton}>
-          <Ionicons name="cash" size={20} color="white" />
-          <Text style={styles.buttonText}>Buy now</Text>
-        </TouchableOpacity>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={styles.starContainer}>
+              <StarRatingDisplay starSize={20} rating={4.5} />
+              <Text>(255 reviews)</Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 17, fontWeight: "400" }}>Toys</Text>
+            </View>
+          </View>
+
+          <Text style={{ fontSize: 20, fontWeight: "500" }}>Description</Text>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "400",
+              color: "#ababab",
+              marginBottom: 20,
+            }}
+          >
+            {product?.description || ""}
+          </Text>
+        </View>
+        {/*<View style={styles.priceBox}>
+          <TouchableOpacity
+            onPress={handleDecreaseQuantity}
+            style={{ width: 30, alignItems: "center" }}
+          >
+            <AntDesign name="minus" size={16} />
+          </TouchableOpacity>
+          <TextInput
+            value={quantity.toString()}
+            keyboardType={"numeric"}
+            style={{
+              borderWidth: 1,
+              textAlign: "center",
+              width: 50,
+              height: 40,
+            }}
+          />
+          <TouchableOpacity
+            onPress={handleIncreaseQuantity}
+            style={{ width: 30, alignItems: "center" }}
+          >
+            <AntDesign name="plus" size={16} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => {
+              dispatch(
+                addItemstoCart({
+                  id: product._id,
+                  name: product.name,
+                  price: product.price,
+                  quantity: quantity,
+                  productImage: product.productImage[0],
+                })
+              );
+            }}
+          >
+            <Ionicons name="cart" size={20} color="white" />
+            <Text style={styles.buttonText}>Add to cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buyNowButton}>
+            <Ionicons name="cash" size={20} color="white" />
+            <Text style={styles.buttonText}>Buy now</Text>
+          </TouchableOpacity>
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -174,16 +173,14 @@ export default ProductDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
     justifyContent: "center",
     alignItems: "center",
   },
   detailsContainer: {
-    paddingHorizontal: 10,
-    marginTop: 10,
+    padding: 20,
     display: "flex",
     flexDirection: "column",
-    gap: 5,
+    rowGap: 10,
   },
   starContainer: {
     display: "flex",
