@@ -63,12 +63,11 @@ const ShoppingBagScreen = () => {
 
   const getSelectedAddress = async () => {
     const address = await AsyncStorage.getItem("address");
-    if (address) {
-      setAddressItem(JSON.parse(address));
-      dispatch(addAddress(JSON.parse(address)));
-    }
-  };
 
+    if(address && addressItem == null){
+      setAddressItem( JSON.parse(address) );
+    }
+  }
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
