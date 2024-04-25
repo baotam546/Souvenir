@@ -7,15 +7,16 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../components/Header";
+import React, { useEffect } from "react";
 import { FlatList } from "react-native";
 import CategoryCircleCard from "../components/CategoryCircleCard";
 import MainCarousel from "../components/MainCarousel";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import ProductCard from "../components/ProductCard";
+import { useNavigation } from "@react-navigation/native";
+import { productApi } from "../utils/api/product";
+import useAxiosPrivate from "../hooks/axiosPrivate";
 
 const productImg = require("../assets/teddy.jpg");
 
@@ -31,23 +32,38 @@ const Product = [
 ];
 
 const HomeScreen = () => {
+  const axios = useAxiosPrivate();
+  const navigation = useNavigation();
+  const [productList, setProductList] = React.useState([]);
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`product/?page=1&limit=999`);
+      if (res.status === 200) {
+        setProductList(res.data.data.data);
+        //       console.log("productList", productList);
+      }
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <ScrollView style={styles.scrollViewContainer}>
       <View style={{ flex: 1, paddingHorizontal: 10 }}>
-        <Text style={styles.mainTitle}>All Feature</Text>
+        <Text style={styles.mainTitle}>Welcome back !</Text>
       </View>
 
-      <View style={{ flex: 1 }}>
+      {/* <View style={{ flex: 1 }}>
         <FlatList
           horizontal
           data={Category}
           renderItem={({ item }) => (
             <View style={styles.flatListWrapper}>
-              <CategoryCircleCard name={item.name} />
+              <CategoryCircleCard name={item.name} key={item.id} />
             </View>
           )}
         />
-      </View>
+      </View> */}
 
       <View style={styles.container}>
         <MainCarousel />
@@ -70,15 +86,7 @@ const HomeScreen = () => {
           }}
         >
           <View>
-            <Text style={{ fontSize: 18, color: "white" }}>
-              Deal of the Day
-            </Text>
-            <View style={{ flexDirection: "row", columnGap: 5, marginTop: 6 }}>
-              <Ionicons name="alarm-outline" size={20} color="white" />
-              <Text style={{ fontSize: 12, color: "white" }}>
-                22h 55m 20s remaining
-              </Text>
-            </View>
+            <Text style={{ fontSize: 18, color: "white" }}>All Products</Text>
           </View>
 
           <View>
@@ -92,6 +100,9 @@ const HomeScreen = () => {
                 columnGap: 10,
                 borderRadius: 10,
               }}
+              onPress={() => {
+                navigation.navigate("productList-screen");
+              }}
             >
               <Text style={{ fontSize: 16, color: "white" }}>View all</Text>
               <Ionicons name="arrow-forward" size={16} color={"white"} />
@@ -100,19 +111,27 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          height: "auto",
-          paddingVertical: 10,
-        }}
-      >
-        <FlatList
-          horizontal
-          data={Product}
-          renderItem={() => <ProductCard />}
-        />
-      </View>
+      {productList.length > 0 && (
+        <View
+          style={{
+            flex: 1,
+            height: "auto",
+            paddingVertical: 10,
+            marginVertical: 10,
+          }}
+        >
+          <FlatList
+            horizontal
+            data={productList}
+            renderItem={({ item }) => <ProductCard item={item} key={item.id} />}
+            keyExtractor={(item: any) => item.id}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };

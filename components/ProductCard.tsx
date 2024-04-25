@@ -7,15 +7,29 @@ import {
   StyleSheet,
 } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const productImg = require("../assets/teddy.jpg");
 
-const ProductCard = () => {
+interface ProductCardProps {
+  item: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    productImage: string;
+  };
+}
+const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={{
+        marginBottom: 10,
+        marginHorizontal: 5,
         height: "auto",
-        width: "auto",
+        width: 170,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -26,19 +40,21 @@ const ProductCard = () => {
 
         elevation: 9,
       }}
+      onPress={() => {
+        navigation.navigate("productDetails-screen", item);
+      }}
     >
       <View
         style={{
           height: "auto",
-          width: "auto",
+          width: 170,
           justifyContent: "center",
           marginRight: 10,
         }}
       >
-        {/* product img */}
-        <View style={{ height: 175, width: 200 }}>
+        <View style={{ height: 175, width: 170 }}>
           <Image
-            source={productImg}
+            source={{ uri: item.productImage[0] }}
             resizeMode="cover"
             style={{
               width: "100%",
@@ -53,7 +69,7 @@ const ProductCard = () => {
         <View
           style={{
             height: "auto",
-
+            width: "auto",
             backgroundColor: "white",
             padding: 10,
             rowGap: 5,
@@ -61,9 +77,9 @@ const ProductCard = () => {
             borderBottomRightRadius: 10,
           }}
         >
-          <Text style={styles.productName}>Teddy</Text>
+          <Text style={styles.productName}>{item.name}</Text>
           <Text style={styles.shortDes}>Lorem ipsum dolor</Text>
-          <Text style={styles.price}>$1500</Text>
+          <Text style={styles.price}>${item.price}</Text>
         </View>
       </View>
     </TouchableOpacity>

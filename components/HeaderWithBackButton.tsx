@@ -1,5 +1,5 @@
-import { View, Platform, TouchableOpacity, Image } from "react-native";
-import React, { useContext } from "react";
+import { View, Platform, TouchableOpacity, Image, Text } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { Avatar } from "@rneui/base";
@@ -7,25 +7,30 @@ import Search from "./SearchBar";
 import Colors from "../constants/Colors";
 const logoImg = require("../assets/logo2.png");
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "../context/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
 import Cart from "./Cart";
 
-const Header = () => {
+interface Props{
+    title: string
+    
+}
+const HeaderWithBackButton: React.FC<Props>= ({
+    title
+}) => {
   const navigation = useNavigation();
-  const authContext = useContext(AuthContext);
-  const logout = authContext?.logout;
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <View>
-          <Image source={logoImg} style={styles.logo} />
+        <View style={{display: "flex", flexDirection:"row", gap:5, alignItems:"center", justifyContent:"center"}}>
+            <Ionicons name="arrow-back" size={24} onPress={() => navigation.goBack()} />
+          <Text style={styles.logo}>{title}</Text>
         </View>
         <View
           style={{ alignItems: "center", flexDirection: "row", columnGap: 10 }}
         >
           <Cart/>
-          <TouchableOpacity onPress={()=>{logout && logout()}}>
+          <TouchableOpacity>
             <Avatar
               size={32}
               rounded
@@ -60,10 +65,10 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 100,
-    height: 50,
-    resizeMode: "cover",
+    fontWeight: "bold",
+    fontSize: 25,
+    letterSpacing: -1.5,
   },
 });
 
-export default Header;
+export default HeaderWithBackButton;

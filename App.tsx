@@ -1,16 +1,20 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useContext, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import TabNavigator from "./navigation/TabNavigator";
-
-// const Drawer = createDrawerNavigator();
+import { AuthProvider } from "./context/AuthContext";
+import AppNav from "./navigation/AppNav";
+import { Provider } from "react-redux";
+import {store} from './redux/store/store'
 
 export default function App() {
+ 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+        <AppNav/>
+      </SafeAreaProvider>
+      </Provider>
+      
+    </AuthProvider>
   );
 }
