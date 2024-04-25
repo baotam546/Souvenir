@@ -5,6 +5,7 @@ import { Fontisto, Ionicons } from "@expo/vector-icons";
 import { paymentApi } from "../utils/api/payment";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { TextPropTypes } from "react-native";
 
 type Product = {
   id: string;
@@ -14,7 +15,8 @@ type Product = {
 };
 
 const PaycheckScreen = () => {
-  const [isSelected, setIsSelected] = useState(false);
+  const [isCodSelected, setIsCodSelected] = useState(false);
+  const [isPaypalSelected, setIsPaypalSelected] = useState(false);
   const items = useSelector((state: any) => state.cart.data);
   const [cartItem, setCartItem] = useState<Product[]>(items);
   const navigation = useNavigation();
@@ -38,18 +40,22 @@ const PaycheckScreen = () => {
 
     try {
       const response = await paymentApi.createPayment(arr);
-      console.log("response: ", response.data);
       if (response.data.status === 200) {
         setPaypalUrl(response.data.data);
         setLoading(false);
-
-        console.log("paypal url: ", paypalUrl);
-
         // err1
         if (paypalUrl !== "") {
           navigation.navigate("paypal-webview", { paypalUrl: paypalUrl });
         }
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createCodPayment = async (arr: any) => {
+    try {
+      navigation.navigate("successScreen");
     } catch (error) {
       console.error(error);
     }
@@ -99,33 +105,62 @@ const PaycheckScreen = () => {
 
         <View style={{ marginTop: 20, rowGap: 20 }}>
           <TouchableOpacity
-            onPress={() => setIsSelected(!isSelected)}
+            onPress={() => {
+              setIsCodSelected(true);
+              setIsPaypalSelected(false);
+            }}
             style={{
               borderRadius: 5,
               alignItems: "center",
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "center",
               paddingVertical: 15,
               paddingHorizontal: 30,
-              borderWidth: isSelected ? 2 : 1,
-              borderColor: isSelected ? "#D50000" : "#CACACA",
+              borderWidth: isCodSelected ? 2 : 1,
+              borderColor: isCodSelected ? "#D50000" : "#CACACA",
+              backgroundColor: Colors.greyBackGround,
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>COD</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setIsPaypalSelected(true);
+              setIsCodSelected(false);
+            }}
+            style={{
+              borderRadius: 5,
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+              paddingVertical: 15,
+              paddingHorizontal: 30,
+              borderWidth: isPaypalSelected ? 2 : 1,
+              borderColor: isPaypalSelected ? "#D50000" : "#CACACA",
               backgroundColor: Colors.greyBackGround,
             }}
           >
             <Fontisto name="paypal-p" size={24} />
-            <Text>********2104</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            disabled={isSelected ? false : true}
-            onPress={() => createPayment(cartPayment)}
+            disabled={!isCodSelected && !isPaypalSelected}
+            onPress={() => {
+              if (isCodSelected) {
+                createCodPayment(cartPayment);
+              } else {
+                createPayment(cartPayment);
+              }
+            }}
             style={{
               borderRadius: 5,
               alignItems: "center",
               justifyContent: "center",
               paddingVertical: 15,
               paddingHorizontal: 30,
-              backgroundColor: isSelected ? "#F83758" : "#CACACA",
+              backgroundColor:
+                isCodSelected || isPaypalSelected ? "#F83758" : "#CACACA",
               marginTop: 30,
             }}
           >

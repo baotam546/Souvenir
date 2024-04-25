@@ -35,18 +35,6 @@ const HomeScreen = () => {
   const axios = useAxiosPrivate();
   const navigation = useNavigation();
   const [productList, setProductList] = React.useState([]);
-  // const fetchData = async () => {
-  //   try {
-  //     const res = await productApi.getAllProductList();
-  //     console.log("res", res.data.data);
-  //     if(res.status == 200){
-  //       setProductList(res.data.data.data)
-  //       console.log("productList", productList);
-  //     }
-  //   } catch (error) {
-
-  //   }
-  // }
   const fetchData = async () => {
     try {
       const res = await axios.get(`product/?page=1&limit=999`);
@@ -62,20 +50,20 @@ const HomeScreen = () => {
   return (
     <ScrollView style={styles.scrollViewContainer}>
       <View style={{ flex: 1, paddingHorizontal: 10 }}>
-        <Text style={styles.mainTitle}>All Feature</Text>
+        <Text style={styles.mainTitle}>Welcome back !</Text>
       </View>
 
-      <View style={{ flex: 1 }}>
+      {/* <View style={{ flex: 1 }}>
         <FlatList
           horizontal
           data={Category}
           renderItem={({ item }) => (
             <View style={styles.flatListWrapper}>
-              <CategoryCircleCard name={item.name} />
+              <CategoryCircleCard name={item.name} key={item.id} />
             </View>
           )}
         />
-      </View>
+      </View> */}
 
       <View style={styles.container}>
         <MainCarousel />
@@ -98,15 +86,7 @@ const HomeScreen = () => {
           }}
         >
           <View>
-            <Text style={{ fontSize: 18, color: "white" }}>
-              Deal of the Day
-            </Text>
-            <View style={{ flexDirection: "row", columnGap: 5, marginTop: 6 }}>
-              <Ionicons name="alarm-outline" size={20} color="white" />
-              <Text style={{ fontSize: 12, color: "white" }}>
-                22h 55m 20s remaining
-              </Text>
-            </View>
+            <Text style={{ fontSize: 18, color: "white" }}>All Products</Text>
           </View>
 
           <View>

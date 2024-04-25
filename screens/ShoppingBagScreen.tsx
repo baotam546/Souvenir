@@ -31,7 +31,8 @@ const ShoppingBagScreen = () => {
   const address = useSelector((state: any) => state.address.data);
   const [showAddressNotification, setShowAddressNotification] = useState(false);
   const [addressItem, setAddressItem] = useState<addressItem>();
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
+
   const proceedToPayment = () => {
     if (address.length >= 1) {
       navigate("paycheck-screen");
@@ -51,14 +52,22 @@ const ShoppingBagScreen = () => {
 
   useEffect(() => {
     getSelectedAddress();
-  }, []);
+    let total = 0;
+
+    for (let item of items) {
+      total += item.price * item.quantity;
+    }
+
+    setTotalPrice(total);
+  }, [items]);
+
   const getSelectedAddress = async () => {
     const address = await AsyncStorage.getItem("address");
+
     if(address && addressItem == null){
       setAddressItem( JSON.parse(address) );
     }
   }
-
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
@@ -91,7 +100,7 @@ const ShoppingBagScreen = () => {
               </View>
             </>
           ) : (
-            <View >
+            <View>
               <Text style={styles.title}>Choose Address</Text>
             </View>
           )}
