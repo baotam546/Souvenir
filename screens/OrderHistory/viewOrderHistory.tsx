@@ -37,7 +37,7 @@ const ProductListScreen = () => {
         >
             Order History
         </Text>
-        {/* <TouchableHighlight
+      <TouchableHighlight
             style={{backgroundColor: 'red', padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}
             onPress={()=>{logout && logout()}} >
           <Text 
@@ -49,7 +49,7 @@ const ProductListScreen = () => {
             }}>
             Logout
           </Text>
-        </TouchableHighlight> */}
+        </TouchableHighlight> 
       </View>
       <View style={{ flex: 1 }}>
         <FlatList

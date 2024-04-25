@@ -12,29 +12,29 @@ import React, { useState } from "react";
 // import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
-
 //   const productImg = require("../assets/teddy.jpg");
 
 interface Items {
-    productId: Product;
-    quantity: number;
-    _id: string;
-  }
-  interface Product {
-    _id: string;
-    name: string;
-    price: number;
-  }
+  productId: Product;
+  quantity: number;
+  _id: string;
+}
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+}
 
 interface OrderRecordProps {
   item: {
     orderID: string;
     status: string;
-    items:Items[];
+    items: Items[];
+    createdAt: Date;
   };
 }
 const OrderRecord: React.FC<OrderRecordProps> = ({ item }) => {
-//   const navigation = useNavigation();
+  //   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -62,10 +62,17 @@ const OrderRecord: React.FC<OrderRecordProps> = ({ item }) => {
             height: "auto",
             width: "100%",
             justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "white",
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            padding: 10,
+            flexDirection: "row",
+
             marginRight: 10,
           }}
         >
-          <View style={{ width: 170 }}></View>
+          {/* <View style={{ width: 170 }}></View> */}
 
           {/* product text */}
           <View
@@ -82,48 +89,77 @@ const OrderRecord: React.FC<OrderRecordProps> = ({ item }) => {
             <Text style={styles.productName} numberOfLines={1}>
               Order ID:{item.orderID}
             </Text>
-            {/* <Text style={styles.shortDes}>Lorem ipsum dolor</Text> */}
-            <Text style={styles.shortDes}>
-              <Text style={{ fontWeight: "bold" }}>Status:</Text> {item.status}
-            </Text>
+            <View>
+              <Text style={styles.statusHeader}>
+                Status:
+                
+                  <Text
+                    style={{
+                      color:
+                        item.status === "completed" ? "green" : "red",
+                      padding: 5,
+                      borderRadius: 100,
+                      fontWeight: "bold",
+                      // color: "white",
+                      fontSize: 16,
+                      textAlignVertical: "center",
+                    }}
+                  >
+                    {" "}
+                    {item.status}{" "}
+                  </Text>
+                
+              </Text>
+              <Text style={styles.price}>
+                Date created: {new Date(item.createdAt).toDateString()}
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
       >
+        <View
+          style={styles.closeShadow}
+          onTouchEnd={() => setModalVisible(!modalVisible)}
+        />
         <View style={styles.centeredView}>
-    <View style={styles.modalView}>
-    <View style={styles.tableRow}>
-      <Text style={styles.tableCell}>No.</Text>
-      <Text style={styles.tableCell}>Name</Text>
-      <Text style={styles.tableCell}>Price</Text>
-      <Text style={styles.tableCell}>Quantity</Text>
-        <Text style={styles.tableCell}>Total</Text>
-    </View>
-    {item.items.map((arrayItem, index) => (
-      <View key={index} style={styles.tableRow}>
-        <Text style={styles.tableCell}>{index + 1}</Text>
-        <Text style={styles.tableCell}>{arrayItem.productId.name}</Text>
-        <Text style={styles.tableCell}>{arrayItem.productId.price}</Text>
-        <Text style={styles.tableCell}>{arrayItem.quantity}</Text>
-        <Text style={styles.tableCell}>{arrayItem.productId.price * arrayItem.quantity}</Text>
-      </View>
-    ))}
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-        style={styles.closeModalBtn}
-      >
-        <Ionicons name="close" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
+          <View style={styles.modalView}>
+            <View style={styles.tableRow}>
+              <Text style={styles.noCell}>No.</Text>
+              <Text style={styles.tableCell}>Name</Text>
+              <Text style={styles.tableCell}>Price</Text>
+              <Text style={styles.tableCell}>Quantity</Text>
+              <Text style={styles.tableCell}>Total</Text>
+            </View>
+            {item.items.map((arrayItem, index) => (
+              <View key={index} style={styles.tableRow}>
+                <Text style={styles.noCell}>{index + 1}</Text>
+                <Text style={styles.tableCell}>{arrayItem.productId.name}</Text>
+                <Text style={styles.tableCell}>
+                  {arrayItem.productId.price}
+                </Text>
+                <Text style={styles.tableCell}>{arrayItem.quantity}</Text>
+                <Text style={styles.tableCell}>
+                  {arrayItem.productId.price * arrayItem.quantity}
+                </Text>
+              </View>
+            ))}
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              style={styles.closeModalBtn}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </>
@@ -139,20 +175,35 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  shortDes: {
+  statusHeader: {
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "bold",
+    color: "black",
+    flexDirection: "row",
+    // alignSelf: "center",
+    // alignContent: "center",
+    justifyContent: "center",
+    textAlignVertical: "center",
+    // alignItems: "center",
+    // textAlign: "center",
+
+    padding: 5,
   },
 
   price: {
     fontSize: 16,
     fontWeight: "500",
   },
+  closeShadow: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
   centeredView: {
     flex: 1,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    backgroundColor: "rgba(0,0,0,0.5)",
+
     justifyContent: "center",
     alignItems: "center",
     // marginTop: 22
@@ -172,8 +223,8 @@ const styles = StyleSheet.create({
     // shadowOpacity: 1,
     // shadowRadius: 1000,
     elevation: 5,
-    maxHeight: '80%',
-    width: '90%', 
+    maxHeight: "80%",
+    width: "90%",
   },
   closeModalBtn: {
     // backgroundColor: "red",
@@ -186,15 +237,23 @@ const styles = StyleSheet.create({
     height: 30,
   },
   tableRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomColor: '#000',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomColor: "#9f9f9f",
     borderBottomWidth: 1,
-    padding: 10,
+    padding: 8,
   },
   tableCell: {
     flex: 1,
-    
+    textAlign: "center",
+  },
+  noCell: {
+    flex: 0.5,
+    textAlign: "center",
+  },
+  totalCell: {
+    flex: 1,
+    textAlign: "center",
   },
 });
 export default OrderRecord;
